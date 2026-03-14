@@ -53,30 +53,31 @@ function DriverStandings() {
           {[podiumDrivers[1], podiumDrivers[0], podiumDrivers[2]]
             .filter(Boolean)
             .map((driver, i) => (
-            <div
-              key={driver.number}
-              className={`podium-card podium-${driver.position}`}
-              style={{ transitionDelay: `${i * 60}ms` }}
-            >
-              {driver.position === 1 && <div className="podium-crown">👑</div>}
-              <div className="podium-position">P{driver.position}</div>
-              <div className="driver-avatar" style={{ background: driver.gradient }}>
-                <span className="driver-number">{driver.number}</span>
-                <img 
-                  className="driver-photo-layer" 
-                  src={getDriverImage(driver.name)} 
-                  alt={driver.name} 
-                  onError={(e) => { e.target.style.display = 'none'; }} 
+              <div
+                key={driver.number}
+                className={`podium-card podium-${driver.position}`}
+                style={{ transitionDelay: `${i * 60}ms` }}
+              >
+                <img
+                  className="driver-photo-layer"
+                  src={getDriverImage(driver.name)}
+                  alt={driver.name}
+                  onError={(e) => { e.target.style.display = 'none'; }}
                 />
+                {driver.position === 1 && <div className="podium-crown">👑</div>}
+                <div className="podium-position">P{driver.position}</div>
+                <div className="driver-avatar" style={{ background: driver.gradient }}>
+                  <span className="driver-number">{driver.number}</span>
+
+                </div>
+                <h3 className="driver-name">{driver.name}</h3>
+                <span className={`team-name team-${driver.teamClass}`}>{driver.team}</span>
+                <div className={`points-badge ${driver.position === 1 ? 'champion' : ''}`}>
+                  {driver.points} PTS
+                </div>
+                <p className="driver-note">{driver.note}</p>
               </div>
-              <h3 className="driver-name">{driver.name}</h3>
-              <span className={`team-name team-${driver.teamClass}`}>{driver.team}</span>
-              <div className={`points-badge ${driver.position === 1 ? 'champion' : ''}`}>
-                {driver.points} PTS
-              </div>
-              <p className="driver-note">{driver.note}</p>
-            </div>
-          ))}
+            ))}
         </div>
 
         <div className="standings-table">
@@ -88,11 +89,11 @@ function DriverStandings() {
             >
               <span className="pos">{driver.pos}</span>
               <div className="driver-info">
-                <img 
-                  className="row-driver-photo" 
-                  src={getDriverImage(driver.name)} 
-                  alt={driver.name} 
-                  onError={(e) => { e.target.style.display = 'none'; }} 
+                <img
+                  className="row-driver-photo"
+                  src={getDriverImage(driver.name)}
+                  alt={driver.name}
+                  onError={(e) => { e.target.style.display = 'none'; }}
                 />
                 <span className="standing-number" style={{ color: driver.color }}>{driver.number}</span>
                 <span className="standing-name">{driver.name}</span>

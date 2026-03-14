@@ -15,6 +15,10 @@
   position: relative;
   overflow: hidden;
   transition: var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  justify-content: flex-end;
 }
 
 .podium-card::before {
@@ -27,7 +31,7 @@
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
-.podium-1 { padding: 48px 24px; transform: scale(1.05); }
+.podium-1 { padding: 48px 24px; transform: scale(1.05); min-height: 460px; }
 .podium-1::before { background: linear-gradient(90deg, #ffd700, #ffed4a, #ffd700); }
 .podium-2::before { background: linear-gradient(90deg, #c0c0c0, #e0e0e0, #c0c0c0); }
 .podium-3::before { background: linear-gradient(90deg, #cd7f32, #daa520, #cd7f32); }
@@ -212,13 +216,24 @@
 
 .driver-photo-layer {
   position: absolute;
-  width: 140%;
-  height: 140%;
-  object-fit: contain;
-  bottom: 0px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
   pointer-events: none;
-  z-index: 2;
-  filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.5));
+  z-index: 0;
+  opacity: 0.25;
+  filter: saturate(0.8) contrast(1.1);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+.podium-card:hover .driver-photo-layer {
+  opacity: 0.5;
+  transform: scale(1.05);
 }
 
 .row-driver-photo {
