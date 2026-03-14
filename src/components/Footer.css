@@ -1,0 +1,29 @@
+#footer {
+  padding: 60px 0;
+  border-top: 1px solid var(--border);
+  background: var(--bg-primary);
+}
+
+.footer-content { text-align: center; }
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Orbitron', sans-serif;
+  margin-bottom: 20px;
+}
+
+.footer-disclaimer {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  max-width: 500px;
+  margin: 0 auto 12px;
+  line-height: 1.6;
+}
+
+.footer-copyright {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}

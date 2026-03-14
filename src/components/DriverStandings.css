@@ -1,0 +1,211 @@
+.podium-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 48px;
+  align-items: end;
+}
+
+.podium-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.podium-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.podium-1 { padding: 48px 24px; transform: scale(1.05); }
+.podium-1::before { background: linear-gradient(90deg, #ffd700, #ffed4a, #ffd700); }
+.podium-2::before { background: linear-gradient(90deg, #c0c0c0, #e0e0e0, #c0c0c0); }
+.podium-3::before { background: linear-gradient(90deg, #cd7f32, #daa520, #cd7f32); }
+
+.podium-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--border-hover);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.podium-1:hover { transform: scale(1.05) translateY(-8px); }
+
+.podium-crown {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  animation: crown-bounce 2s ease-in-out infinite;
+}
+
+@keyframes crown-bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-5px) rotate(-5deg); }
+  75% { transform: translateY(-5px) rotate(5deg); }
+}
+
+.podium-position {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+}
+
+.driver-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.driver-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.driver-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+
+.team-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 50px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.team-ferrari { background: rgba(232, 0, 45, 0.15); color: #e8002d; }
+.team-redbull { background: rgba(102, 146, 255, 0.15); color: #6692ff; }
+.team-mclaren { background: rgba(255, 128, 0, 0.15); color: #ff8000; }
+.team-mercedes { background: rgba(39, 244, 210, 0.15); color: #27f4d2; }
+.team-astonmartin { background: rgba(34, 153, 113, 0.15); color: #229971; }
+
+.points-badge {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.points-badge.champion {
+  background: rgba(255, 215, 0, 0.15);
+  color: var(--gold);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.driver-note {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Standings Table */
+.standings-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.standings-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+  cursor: default;
+}
+
+.standings-row:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  transform: translateX(4px);
+}
+
+.standings-row .pos {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 32px;
+}
+
+.driver-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.standing-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  min-width: 36px;
+}
+
+.standing-name { font-weight: 600; font-size: 0.95rem; }
+
+.standing-team {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.standing-points {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 80px;
+  text-align: right;
+}
+
+.points-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: var(--width);
+  background: var(--accent-gradient);
+  transition: width 1s ease;
+  border-radius: 0 1px 1px 0;
+}
+
+@media (max-width: 1024px) {
+  .podium-grid { grid-template-columns: 1fr; gap: 16px; }
+  .podium-1 { transform: none; }
+  .podium-1:hover { transform: translateY(-8px); }
+}
+
+@media (max-width: 768px) {
+  .standings-row { flex-wrap: wrap; }
+  .standing-team { margin-left: 0; width: 100%; margin-top: 4px; }
+  .driver-info { flex-wrap: wrap; }
+}

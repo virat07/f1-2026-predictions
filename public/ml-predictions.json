@@ -1,0 +1,441 @@
+{
+  "season": 2026,
+  "source": "fastf1_race_winner",
+  "racePredictions": [
+    {
+      "round": 1,
+      "name": "Australian Grand Prix",
+      "circuit": "Albert Park, Melbourne",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 2,
+      "name": "Chinese Grand Prix",
+      "circuit": "Shanghai International",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 3,
+      "name": "Japanese Grand Prix",
+      "circuit": "Suzuka",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 4,
+      "name": "Bahrain Grand Prix",
+      "circuit": "Sakhir",
+      "predictedWinner": "McLaren",
+      "predictedPodium": []
+    },
+    {
+      "round": 5,
+      "name": "Saudi Arabian Grand Prix",
+      "circuit": "Jeddah Corniche",
+      "predictedWinner": "McLaren",
+      "predictedPodium": []
+    },
+    {
+      "round": 6,
+      "name": "Miami Grand Prix",
+      "circuit": "Miami International",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 7,
+      "name": "Canadian Grand Prix",
+      "circuit": "Circuit Gilles-Villeneuve",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 8,
+      "name": "Monaco Grand Prix",
+      "circuit": "Circuit de Monaco",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 9,
+      "name": "Spanish Grand Prix",
+      "circuit": "Barcelona-Catalunya",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 10,
+      "name": "Austrian Grand Prix",
+      "circuit": "Red Bull Ring",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 11,
+      "name": "British Grand Prix",
+      "circuit": "Silverstone",
+      "predictedWinner": "McLaren",
+      "predictedPodium": []
+    },
+    {
+      "round": 12,
+      "name": "Belgian Grand Prix",
+      "circuit": "Spa-Francorchamps",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 13,
+      "name": "Hungarian Grand Prix",
+      "circuit": "Hungaroring",
+      "predictedWinner": "McLaren",
+      "predictedPodium": []
+    },
+    {
+      "round": 14,
+      "name": "Dutch Grand Prix",
+      "circuit": "Zandvoort",
+      "predictedWinner": "McLaren",
+      "predictedPodium": []
+    },
+    {
+      "round": 15,
+      "name": "Italian Grand Prix",
+      "circuit": "Monza",
+      "predictedWinner": "McLaren",
+      "predictedPodium": []
+    },
+    {
+      "round": 16,
+      "name": "Madrid Grand Prix",
+      "circuit": "Madrid Street Circuit",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 17,
+      "name": "Azerbaijan Grand Prix",
+      "circuit": "Baku City Circuit",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 18,
+      "name": "Singapore Grand Prix",
+      "circuit": "Marina Bay",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 19,
+      "name": "United States Grand Prix",
+      "circuit": "COTA, Austin",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 20,
+      "name": "Mexican Grand Prix",
+      "circuit": "Autodromo Hermanos Rodriguez",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 21,
+      "name": "Brazilian Grand Prix",
+      "circuit": "Interlagos, S\u00e3o Paulo",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 22,
+      "name": "Las Vegas Grand Prix",
+      "circuit": "Las Vegas Strip",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 23,
+      "name": "Qatar Grand Prix",
+      "circuit": "Lusail International",
+      "predictedWinner": "Mercedes",
+      "predictedPodium": []
+    },
+    {
+      "round": 24,
+      "name": "Abu Dhabi Grand Prix",
+      "circuit": "Yas Marina",
+      "predictedWinner": "Red Bull Racing",
+      "predictedPodium": []
+    }
+  ],
+  "driverStandings": {
+    "podium": [
+      {
+        "name": "G RUSSELL",
+        "number": "63",
+        "team": "Mercedes",
+        "points": 425.0,
+        "position": 1,
+        "gradient": "linear-gradient(135deg, #ff6b35, #e8002d)",
+        "teamClass": "ml",
+        "note": "Projected based on ML race winner simulator & 2026 results."
+      },
+      {
+        "name": "L NORRIS",
+        "number": "1",
+        "team": "McLaren",
+        "points": 160.0,
+        "position": 2,
+        "gradient": "linear-gradient(135deg, #ff6b35, #e8002d)",
+        "teamClass": "ml",
+        "note": "Projected based on ML race winner simulator & 2026 results."
+      },
+      {
+        "name": "M VERSTAPPEN",
+        "number": "3",
+        "team": "Red Bull Racing",
+        "points": 33.0,
+        "position": 3,
+        "gradient": "linear-gradient(135deg, #ff6b35, #e8002d)",
+        "teamClass": "ml",
+        "note": "Projected based on ML race winner simulator & 2026 results."
+      }
+    ],
+    "rest": [
+      {
+        "name": "K ANTONELLI",
+        "number": "12",
+        "team": "Mercedes",
+        "points": 18.0,
+        "pos": 4,
+        "color": "#ffffff"
+      },
+      {
+        "name": "C LECLERC",
+        "number": "16",
+        "team": "Ferrari",
+        "points": 15.0,
+        "pos": 5,
+        "color": "#ffffff"
+      },
+      {
+        "name": "L HAMILTON",
+        "number": "44",
+        "team": "Ferrari",
+        "points": 12.0,
+        "pos": 6,
+        "color": "#ffffff"
+      },
+      {
+        "name": "O BEARMAN",
+        "number": "87",
+        "team": "Haas F1 Team",
+        "points": 6.0,
+        "pos": 7,
+        "color": "#ffffff"
+      },
+      {
+        "name": "A LINDBLAD",
+        "number": "41",
+        "team": "Racing Bulls",
+        "points": 4.0,
+        "pos": 8,
+        "color": "#ffffff"
+      },
+      {
+        "name": "G BORTOLETO",
+        "number": "5",
+        "team": "Audi",
+        "points": 2.0,
+        "pos": 9,
+        "color": "#ffffff"
+      },
+      {
+        "name": "P GASLY",
+        "number": "10",
+        "team": "Alpine",
+        "points": 1.0,
+        "pos": 10,
+        "color": "#ffffff"
+      },
+      {
+        "name": "E OCON",
+        "number": "31",
+        "team": "Haas F1 Team",
+        "points": 0.0,
+        "pos": 11,
+        "color": "#ffffff"
+      },
+      {
+        "name": "A ALBON",
+        "number": "23",
+        "team": "Williams",
+        "points": 0.0,
+        "pos": 12,
+        "color": "#ffffff"
+      },
+      {
+        "name": "L LAWSON",
+        "number": "30",
+        "team": "Racing Bulls",
+        "points": 0.0,
+        "pos": 13,
+        "color": "#ffffff"
+      },
+      {
+        "name": "F COLAPINTO",
+        "number": "43",
+        "team": "Alpine",
+        "points": 0.0,
+        "pos": 14,
+        "color": "#ffffff"
+      },
+      {
+        "name": "C SAINZ",
+        "number": "55",
+        "team": "Williams",
+        "points": 0.0,
+        "pos": 15,
+        "color": "#ffffff"
+      },
+      {
+        "name": "S PEREZ",
+        "number": "11",
+        "team": "Cadillac",
+        "points": 0.0,
+        "pos": 16,
+        "color": "#ffffff"
+      },
+      {
+        "name": "L STROLL",
+        "number": "18",
+        "team": "Aston Martin",
+        "points": 0.0,
+        "pos": 17,
+        "color": "#ffffff"
+      },
+      {
+        "name": "F ALONSO",
+        "number": "14",
+        "team": "Aston Martin",
+        "points": 0.0,
+        "pos": 18,
+        "color": "#ffffff"
+      },
+      {
+        "name": "V BOTTAS",
+        "number": "77",
+        "team": "Cadillac",
+        "points": 0.0,
+        "pos": 19,
+        "color": "#ffffff"
+      },
+      {
+        "name": "I HADJAR",
+        "number": "6",
+        "team": "Red Bull Racing",
+        "points": 0.0,
+        "pos": 20,
+        "color": "#ffffff"
+      },
+      {
+        "name": "O PIASTRI",
+        "number": "81",
+        "team": "McLaren",
+        "points": 0.0,
+        "pos": 21,
+        "color": "#ffffff"
+      },
+      {
+        "name": "N HULKENBERG",
+        "number": "27",
+        "team": "Audi",
+        "points": 0.0,
+        "pos": 22,
+        "color": "#ffffff"
+      }
+    ]
+  },
+  "constructorStandings": [
+    {
+      "rank": 1,
+      "name": "Mercedes",
+      "points": 443.0,
+      "color": "#e8002d",
+      "note": "Projected from ML predictions & 2026 results."
+    },
+    {
+      "rank": 2,
+      "name": "McLaren",
+      "points": 160.0,
+      "color": "#e8002d",
+      "note": "Projected from ML predictions & 2026 results."
+    },
+    {
+      "rank": 3,
+      "name": "Red Bull Racing",
+      "points": 33.0,
+      "color": "#e8002d",
+      "note": "Projected from ML predictions & 2026 results."
+    },
+    {
+      "rank": 4,
+      "name": "Ferrari",
+      "points": 27.0,
+      "color": "#e8002d",
+      "note": "Projected from ML predictions & 2026 results."
+    },
+    {
+      "rank": 5,
+      "name": "Haas F1 Team",
+      "points": 6.0,
+      "color": "#e8002d",
+      "note": "Projected from ML predictions & 2026 results."
+    },
+    {
+      "rank": 6,
+      "name": "Racing Bulls",
+      "points": 4.0,
+      "color": "#e8002d",
+      "note": "Projected from ML predictions & 2026 results."
+    },
+    {
+      "rank": 7,
+      "name": "Audi",
+      "points": 2.0,
+      "color": "#e8002d",
+      "note": "Projected from ML predictions & 2026 results."
+    },
+    {
+      "rank": 8,
+      "name": "Alpine",
+      "points": 1.0,
+      "color": "#e8002d",
+      "note": "Projected from ML predictions & 2026 results."
+    },
+    {
+      "rank": 9,
+      "name": "Williams",
+      "points": 0.0,
+      "color": "#e8002d",
+      "note": "Projected from ML predictions & 2026 results."
+    },
+    {
+      "rank": 10,
+      "name": "Cadillac",
+      "points": 0.0,
+      "color": "#e8002d",
+      "note": "Projected from ML predictions & 2026 results."
+    },
+    {
+      "rank": 11,
+      "name": "Aston Martin",
+      "points": 0.0,
+      "color": "#e8002d",
+      "note": "Projected from ML predictions & 2026 results."
+    }
+  ]
+}

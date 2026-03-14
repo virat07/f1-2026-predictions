@@ -1,0 +1,9 @@
+/.history
+node_modules/
+dist/
+.env
+.venv/
+__pycache__/
+*.joblib
+.fastf1-cache/
+/ml/output/*.json
