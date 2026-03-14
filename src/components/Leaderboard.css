@@ -1,0 +1,131 @@
+.leaderboard-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.user-stats-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.user-rank-card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.user-rank-card:hover {
+  transform: translateX(10px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.rank-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  min-width: 60px;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.username {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+}
+
+.user-joined {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.user-score {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: white;
+}
+
+.user-score span {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.predictions-table-container {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+.predictions-table-container h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.predictions-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.predictions-table th {
+  text-align: left;
+  padding: 12px;
+  color: var(--text-muted);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.predictions-table td {
+  padding: 12px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.user-cell {
+  color: var(--accent) !important;
+  font-weight: 700;
+}
+
+.driver-cell {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+
+.driver-cell.highlight {
+  color: white;
+  font-weight: 700;
+}
+
+@media (max-width: 1024px) {
+  .leaderboard-container {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+}

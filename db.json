@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "username": "Hamiliton fan",
+      "score": 0,
+      "joined": "2026-03-14T22:21:21.116Z"
+    }
+  ],
+  "predictions": [
+    {
+      "username": "Hamiliton fan",
+      "round": 2,
+      "predictions": {
+        "qualy": "Andrea Kimi Antonelli",
+        "sprint": "George Russell",
+        "race": "Lewis Hamilton"
+      },
+      "timestamp": "2026-03-14T22:21:31.751Z"
+    },
+    {
+      "username": "Hamiliton fan",
+      "round": 15,
+      "predictions": {
+        "race": "Charles Leclerc"
+      },
+      "timestamp": "2026-03-14T22:23:00.299Z"
+    }
+  ]
+}

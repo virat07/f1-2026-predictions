@@ -6,6 +6,7 @@ const navItems = [
   { id: 'drivers', label: 'Drivers' },
   { id: 'constructors', label: 'Teams' },
   { id: 'calendar', label: 'Calendar' },
+  { id: 'leaderboard', label: 'Compete' },
   { id: 'regulations', label: 'Regulations' },
   { id: 'hot-takes', label: 'Hot Takes' },
 ]

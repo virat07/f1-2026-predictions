@@ -71,30 +71,30 @@ export const constructors = [
 
 // Race Calendar Data
 export const races = [
-  { round: 1, flag: '🇦🇺', name: 'Australian Grand Prix', circuit: 'Albert Park, Melbourne', date: 'Mar 6-8', prediction: '🏆 Hamilton wins on Ferrari debut' },
-  { round: 2, flag: '🇨🇳', name: 'Chinese Grand Prix', circuit: 'Shanghai International', date: 'Mar 13-15', prediction: '🏆 Norris dominates from pole' },
-  { round: 3, flag: '🇯🇵', name: 'Japanese Grand Prix', circuit: 'Suzuka', date: 'Mar 27-29', prediction: '🏆 Verstappen shows Red Bull\'s pace' },
-  { round: 4, flag: '🇧🇭', name: 'Bahrain Grand Prix', circuit: 'Sakhir', date: 'Apr 10-12', prediction: '🏆 Leclerc Ferrari 1-2' },
-  { round: 5, flag: '🇸🇦', name: 'Saudi Arabian Grand Prix', circuit: 'Jeddah Corniche', date: 'Apr 17-19', prediction: '🏆 Hamilton under the lights' },
-  { round: 6, flag: '🇺🇸', name: 'Miami Grand Prix', circuit: 'Miami International', date: 'May 1-3', prediction: '🏆 Norris takes the fight to Ferrari' },
-  { round: 7, flag: '🇨🇦', name: 'Canadian Grand Prix', circuit: 'Circuit Gilles-Villeneuve', date: 'May 22-24', prediction: '🏆 Verstappen masters the rain' },
-  { round: 8, flag: '🇲🇨', name: 'Monaco Grand Prix', circuit: 'Circuit de Monaco', date: 'Jun 5-7', prediction: '🏆 Leclerc wins at home again' },
-  { round: 9, flag: '🇪🇸', name: 'Spanish Grand Prix', circuit: 'Barcelona-Catalunya', date: 'Jun 12-14', prediction: '🏆 Russell\'s Mercedes breakthrough' },
-  { round: 10, flag: '🇦🇹', name: 'Austrian Grand Prix', circuit: 'Red Bull Ring', date: 'Jun 26-28', prediction: '🏆 Verstappen dominates at home' },
-  { round: 11, flag: '🇬🇧', name: 'British Grand Prix', circuit: 'Silverstone', date: 'Jul 3-5', prediction: '🏆 Hamilton wins for the crowds' },
-  { round: 12, flag: '🇧🇪', name: 'Belgian Grand Prix', circuit: 'Spa-Francorchamps', date: 'Jul 17-19', prediction: '🏆 Piastri\'s breakout drive' },
-  { round: 13, flag: '🇭🇺', name: 'Hungarian Grand Prix', circuit: 'Hungaroring', date: 'Jul 24-26', prediction: '🏆 Norris dominates tight track' },
-  { round: 14, flag: '🇳🇱', name: 'Dutch Grand Prix', circuit: 'Zandvoort', date: 'Aug 21-23', prediction: '🏆 Verstappen\'s final Zandvoort farewell' },
-  { round: 15, flag: '🇮🇹', name: 'Italian Grand Prix', circuit: 'Monza', date: 'Sep 4-6', prediction: '🏆 Ferrari Tifosi dream — Hamilton wins' },
-  { round: 16, flag: '🇪🇸', name: 'Madrid Grand Prix', circuit: 'Madrid Street Circuit', date: 'Sep 11-13', prediction: '🏆 Leclerc shines at the new venue' },
-  { round: 17, flag: '🇦🇿', name: 'Azerbaijan Grand Prix', circuit: 'Baku City Circuit', date: 'Sep 25-27', prediction: '🏆 Chaos race — Antonelli podium!' },
-  { round: 18, flag: '🇸🇬', name: 'Singapore Grand Prix', circuit: 'Marina Bay', date: 'Oct 9-11', prediction: '🏆 Leclerc under the lights' },
-  { round: 19, flag: '🇺🇸', name: 'United States Grand Prix', circuit: 'COTA, Austin', date: 'Oct 23-25', prediction: '🏆 Hamilton seals the title deal' },
-  { round: 20, flag: '🇲🇽', name: 'Mexican Grand Prix', circuit: 'Autodromo Hermanos Rodriguez', date: 'Oct 30 - Nov 1', prediction: '🏆 Verstappen altitude advantage' },
-  { round: 21, flag: '🇧🇷', name: 'Brazilian Grand Prix', circuit: 'Interlagos, São Paulo', date: 'Nov 6-8', prediction: '🏆 Classic Interlagos rain drama' },
-  { round: 22, flag: '🇺🇸', name: 'Las Vegas Grand Prix', circuit: 'Las Vegas Strip', date: 'Nov 19-21', prediction: '🏆 Norris shines under neon' },
-  { round: 23, flag: '🇶🇦', name: 'Qatar Grand Prix', circuit: 'Lusail International', date: 'Nov 27-29', prediction: '🏆 Hamilton extends the lead' },
-  { round: 24, flag: '🇦🇪', name: 'Abu Dhabi Grand Prix', circuit: 'Yas Marina', date: 'Dec 4-6', prediction: '🏆 CHAMPION CROWNED — Hamilton 8x WDC' },
+  { round: 1, flag: '🇦🇺', name: 'Australian Grand Prix', circuit: 'Melbourne', date: 'Mar 6–8', prediction: '🏆 Hamilton wins on Ferrari debut' },
+  { round: 2, flag: '🇨🇳', name: 'Chinese Grand Prix', circuit: 'Shanghai', date: 'Mar 13–15', prediction: '🏆 Norris dominates from pole', isSprint: true },
+  { round: 3, flag: '🇯🇵', name: 'Japanese Grand Prix', circuit: 'Suzuka', date: 'Mar 27–29', prediction: '🏆 Verstappen shows Red Bull\'s pace' },
+  { round: 4, flag: '🇧🇭', name: 'Bahrain Grand Prix', circuit: 'Sakhir', date: 'Apr 10–12', prediction: '🏆 Leclerc Ferrari 1-2' },
+  { round: 5, flag: '🇸🇦', name: 'Saudi Arabian Grand Prix', circuit: 'Jeddah', date: 'Apr 17–19', prediction: '🏆 Hamilton under the lights' },
+  { round: 6, flag: '🇺🇸', name: 'Miami Grand Prix', circuit: 'Miami', date: 'May 1–3', prediction: '🏆 Norris takes the fight to Ferrari', isSprint: true },
+  { round: 7, flag: '🇨🇦', name: 'Canadian Grand Prix', circuit: 'Montreal', date: 'May 22–24', prediction: '🏆 Verstappen masters the rain', isSprint: true },
+  { round: 8, flag: '🇲🇨', name: 'Monaco Grand Prix', circuit: 'Monaco', date: 'June 5–7', prediction: '🏆 Leclerc wins at home again' },
+  { round: 9, flag: '🇪🇸', name: 'Spanish Grand Prix', circuit: 'Barcelona', date: 'June 12–14', prediction: '🏆 Russell\'s Mercedes breakthrough' },
+  { round: 10, flag: '🇦🇹', name: 'Austrian Grand Prix', circuit: 'Spielberg', date: 'June 26–28', prediction: '🏆 Verstappen dominates at home' },
+  { round: 11, flag: '🇬🇧', name: 'British Grand Prix', circuit: 'Silverstone', date: 'July 3–5', prediction: '🏆 Hamilton wins for the crowds', isSprint: true },
+  { round: 12, flag: '🇧🇪', name: 'Belgian Grand Prix', circuit: 'Spa', date: 'July 17–19', prediction: '🏆 Piastri\'s breakout drive' },
+  { round: 13, flag: '🇭🇺', name: 'Hungarian Grand Prix', circuit: 'Budapest', date: 'July 24–26', prediction: '🏆 Norris dominates tight track' },
+  { round: 14, flag: '🇳🇱', name: 'Dutch Grand Prix', circuit: 'Zandvoort', date: 'Aug 21–23', prediction: '🏆 Verstappen\'s final Zandvoort farewell', isSprint: true },
+  { round: 15, flag: '🇮🇹', name: 'Italian Grand Prix', circuit: 'Monza', date: 'Sept 4–6', prediction: '🏆 Ferrari Tifosi dream — Hamilton wins' },
+  { round: 16, flag: '🇪🇸', name: 'Madrid Grand Prix', circuit: 'Madrid', date: 'Sept 11–13', prediction: '🏆 Leclerc shines at the new venue' },
+  { round: 17, flag: '🇦🇿', name: 'Azerbaijan Grand Prix', circuit: 'Baku', date: 'Sept 24–26', prediction: '🏆 Chaos race — Antonelli podium!' },
+  { round: 18, flag: '🇸🇬', name: 'Singapore Grand Prix', circuit: 'Singapore', date: 'Oct 9–11', prediction: '🏆 Leclerc under the lights', isSprint: true },
+  { round: 19, flag: '🇺🇸', name: 'United States Grand Prix', circuit: 'Austin', date: 'Oct 23–25', prediction: '🏆 Hamilton seals the title deal' },
+  { round: 20, flag: '🇲🇽', name: 'Mexican Grand Prix', circuit: 'Mexico City', date: 'Oct 30 – Nov 1', prediction: '🏆 Verstappen altitude advantage' },
+  { round: 21, flag: '🇧🇷', name: 'Brazilian Grand Prix', circuit: 'São Paulo', date: 'Nov 6–8', prediction: '🏆 Classic Interlagos rain drama' },
+  { round: 22, flag: '🇺🇸', name: 'Las Vegas Grand Prix', circuit: 'Las Vegas', date: 'Nov 19–21', prediction: '🏆 Norris shines under neon' },
+  { round: 23, flag: '🇶🇦', name: 'Qatar Grand Prix', circuit: 'Lusail', date: 'Nov 27–29', prediction: '🏆 Hamilton extends the lead' },
+  { round: 24, flag: '🇦🇪', name: 'Abu Dhabi Grand Prix', circuit: 'Yas Marina', date: 'Dec 4–6', prediction: '🏆 CHAMPION CROWNED — Hamilton 8x WDC' },
 ]
 
 // Regulation Changes Data
@@ -116,3 +116,11 @@ export const hotTakes = [
   { heat: 3, label: 'HOT', peppers: '🌶️🌶️🌶️', title: 'Active aero creates the best racing we\'ve ever seen', description: 'The DRS-on-steroids effect of active aero means we see 50% more overtakes compared to 2025. Every race has at least one lead change. Fans are absolutely buzzing.' },
   { heat: 5, label: 'NUCLEAR', peppers: '🌶️🌶️🌶️🌶️🌶️', title: 'A rookie scores a podium in the first 5 races', description: 'Whether it\'s Antonelli, Colapinto, Bortoleto, Lindblad, or Hadjar — the chaos of new regs creates openings. One of them seizes their moment spectacularly.' },
 ]
+export const allDrivers = [
+  ...podiumDrivers.map(d => ({ name: d.name, team: d.team, number: d.number })),
+  ...restOfGrid.map(d => ({ name: d.name, team: d.team, number: d.number }))
+].sort((a, b) => a.name.localeCompare(b.name));
+
+export const allTeams = [
+  ...constructors.map(c => c.name)
+].sort((a, b) => a.localeCompare(b));

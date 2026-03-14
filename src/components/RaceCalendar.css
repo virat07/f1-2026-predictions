@@ -27,26 +27,49 @@
   box-shadow: 0 0 30px var(--accent-glow);
 }
 
-.race-card.next-race::before {
-  content: 'NEXT RACE';
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: var(--accent);
-  letter-spacing: 1px;
-  padding: 4px 8px;
+@keyframes pulse-next {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+.race-status-badges {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.next-race-badge {
   background: rgba(232, 0, 45, 0.15);
+  color: var(--accent);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 800;
+  padding: 2px 8px;
   border-radius: 4px;
+  letter-spacing: 1px;
+  border: 1px solid rgba(232, 0, 45, 0.3);
   animation: pulse-next 2s ease-in-out infinite;
 }
 
-@keyframes pulse-next {
-  0%, 100% { box-shadow: 0 0 10px rgba(232, 0, 45, 0.1); }
-  50% { box-shadow: 0 0 20px rgba(232, 0, 45, 0.25); }
+.sprint-badge {
+  background: rgba(30, 144, 255, 0.15);
+  color: #1e90ff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  border: 1px solid rgba(30, 144, 255, 0.3);
 }
+
+.race-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
 
 .race-round {
   font-family: 'Orbitron', sans-serif;
@@ -68,12 +91,29 @@
 .race-date { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
 
 .race-prediction {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-  font-size: 0.75rem;
-  color: var(--accent);
-  font-weight: 600;
+  margin-top: 16px;
+  padding: 10px 14px;
+  background: linear-gradient(90deg, rgba(232, 0, 45, 0.15) 0%, rgba(20, 20, 25, 0.4) 100%);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: white;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 4px 0 15px rgba(232, 0, 45, 0.1);
+}
+
+.ai-label {
+  background: var(--accent);
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 1px;
 }
 
 @media (max-width: 768px) {
@@ -96,4 +136,178 @@
 .race-card:hover .circuit-map {
   opacity: 0.25;
   transform: scale(1.1) rotate(-5deg);
+}
+.user-prediction-box {
+  margin-top: 20px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.user-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+.user-selector, .prediction-row select {
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px;
+  font-size: 0.8rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  width: 100%;
+}
+
+.user-selector:focus {
+  border-color: var(--accent);
+}
+
+.user-voted-name {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: 4px;
+}
+
+.prediction-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.prediction-row label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  width: 50px;
+}
+
+.user-profile-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-profile-bar label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.user-profile-bar input {
+  background: none;
+  border: none;
+  border-bottom: 2px solid var(--accent);
+  color: white;
+  padding: 4px 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  outline: none;
+  width: 200px;
+}
+
+.paddock-pass {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #52e252;
+  letter-spacing: 1px;
+}
+.match-badge {
+  display: inline-block;
+  margin-left: 8px;
+  background: rgba(82, 226, 82, 0.15);
+  color: #52e252;
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(82, 226, 82, 0.3);
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.8; box-shadow: 0 0 5px rgba(82, 226, 82, 0.2); }
+  50% { opacity: 1; box-shadow: 0 0 15px rgba(82, 226, 82, 0.4); }
+}
+
+.sync-indicator {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-left: 12px;
+  transition: opacity 0.3s ease;
+}
+
+.sync-indicator.idle { opacity: 0; }
+.sync-indicator.syncing { color: var(--accent); opacity: 1; }
+.sync-indicator.success { color: #52e252; opacity: 1; }
+.sync-indicator.error { color: #ff4d4d; opacity: 1; }
+
+.actual-result-highlighter {
+  margin-top: 12px;
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(218, 165, 32, 0.1) 0%, rgba(20, 20, 25, 0.6) 100%);
+  border: 1px solid rgba(218, 165, 32, 0.3);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  animation: slide-in-bottom 0.5s ease-out;
+}
+
+.result-label {
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 800;
+  color: #daa520;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.result-winners {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.result-winners p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 0;
+}
+
+.result-winners p span {
+  color: white;
+  font-weight: 800;
+  margin-left: 6px;
+}
+
+@keyframes slide-in-bottom {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
