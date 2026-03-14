@@ -79,3 +79,21 @@
 @media (max-width: 768px) {
   .calendar-grid { grid-template-columns: 1fr; }
 }
+
+.circuit-map {
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  width: 160px;
+  height: auto;
+  opacity: 0.12;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.1));
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 0;
+}
+
+.race-card:hover .circuit-map {
+  opacity: 0.25;
+  transform: scale(1.1) rotate(-5deg);
+}

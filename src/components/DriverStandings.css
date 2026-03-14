@@ -209,3 +209,23 @@
   .standing-team { margin-left: 0; width: 100%; margin-top: 4px; }
   .driver-info { flex-wrap: wrap; }
 }
+
+.driver-photo-layer {
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  object-fit: contain;
+  bottom: 0px;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.5));
+}
+
+.row-driver-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+}

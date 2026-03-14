@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { getDriverImage } from '../utils/assetMapper'
 import './DriverStandings.css'
 
 function DriverStandings() {
@@ -61,6 +62,12 @@ function DriverStandings() {
               <div className="podium-position">P{driver.position}</div>
               <div className="driver-avatar" style={{ background: driver.gradient }}>
                 <span className="driver-number">{driver.number}</span>
+                <img 
+                  className="driver-photo-layer" 
+                  src={getDriverImage(driver.name)} 
+                  alt={driver.name} 
+                  onError={(e) => { e.target.style.display = 'none'; }} 
+                />
               </div>
               <h3 className="driver-name">{driver.name}</h3>
               <span className={`team-name team-${driver.teamClass}`}>{driver.team}</span>
@@ -81,6 +88,12 @@ function DriverStandings() {
             >
               <span className="pos">{driver.pos}</span>
               <div className="driver-info">
+                <img 
+                  className="row-driver-photo" 
+                  src={getDriverImage(driver.name)} 
+                  alt={driver.name} 
+                  onError={(e) => { e.target.style.display = 'none'; }} 
+                />
                 <span className="standing-number" style={{ color: driver.color }}>{driver.number}</span>
                 <span className="standing-name">{driver.name}</span>
                 <span className="standing-team">{driver.team}</span>

@@ -39,7 +39,7 @@ export const restOfGrid = [
   { pos: 7, number: 12, color: '#27f4d2', name: 'Andrea Kimi Antonelli', team: 'Mercedes', points: 240 },
   { pos: 8, number: 14, color: '#229971', name: 'Fernando Alonso', team: 'Aston Martin', points: 168 },
   { pos: 9, number: 18, color: '#229971', name: 'Lance Stroll', team: 'Aston Martin', points: 142 },
-  { pos: 10, number: 20, color: '#6692ff', name: 'Isack Hadjar', team: 'Red Bull Racing', points: 130 },
+  { pos: 10, number: 6, color: '#6692ff', name: 'Isack Hadjar', team: 'Red Bull Racing', points: 130 },
   { pos: 11, number: 10, color: '#52e252', name: 'Pierre Gasly', team: 'Alpine', points: 98 },
   { pos: 12, number: 43, color: '#52e252', name: 'Franco Colapinto', team: 'Alpine', points: 72 },
   { pos: 13, number: 27, color: '#b6babd', name: 'Nico Hülkenberg', team: 'Audi', points: 65 },
@@ -49,7 +49,7 @@ export const restOfGrid = [
   { pos: 17, number: 87, color: '#2293d1', name: 'Oliver Bearman', team: 'Haas', points: 28 },
   { pos: 18, number: 31, color: '#2293d1', name: 'Esteban Ocon', team: 'Haas', points: 22 },
   { pos: 19, number: 30, color: '#1e6176', name: 'Liam Lawson', team: 'Racing Bulls', points: 15 },
-  { pos: 20, number: 38, color: '#1e6176', name: 'Arvid Lindblad', team: 'Racing Bulls', points: 10 },
+  { pos: 20, number: 41, color: '#1e6176', name: 'Arvid Lindblad', team: 'Racing Bulls', points: 10 },
   { pos: 21, number: 77, color: '#C0C0C0', name: 'Valtteri Bottas', team: 'Cadillac', points: 8 },
   { pos: 22, number: 11, color: '#C0C0C0', name: 'Sergio Pérez', team: 'Cadillac', points: 5 },
 ]

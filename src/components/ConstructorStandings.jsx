@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { getTeamImage } from '../utils/assetMapper'
 import './ConstructorStandings.css'
 
 function ConstructorStandings() {
@@ -50,6 +51,12 @@ function ConstructorStandings() {
             >
               <div className="constructor-rank">{team.rank}</div>
               <div className="constructor-color" style={{ background: team.color }}></div>
+              <img 
+                className="team-car-img" 
+                src={getTeamImage(team.name)} 
+                alt={team.name} 
+                onError={(e) => { e.target.style.display = 'none'; }} 
+              />
               <div className="constructor-info">
                 <h3>{team.name}</h3>
                 <p className="constructor-drivers">{team.drivers}</p>

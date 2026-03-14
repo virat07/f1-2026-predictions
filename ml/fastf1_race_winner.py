@@ -113,13 +113,46 @@ def encode_and_train(df: pd.DataFrame):
 
 
 def predict_2026_races(clf, label_to_team: dict[int, str]):
+    sentiment_path = PROJECT_ROOT / "ml" / "output" / "team_sentiment.json"
+    sentiments = {}
+    if sentiment_path.exists():
+        with open(sentiment_path) as f:
+            sentiments = json.load(f)
+            
+    # Inject user's specific feedback about F1 news momentum
+    sentiments["Ferrari"] = sentiments.get("Ferrari", 0) + 1.2
+    sentiments["McLaren"] = sentiments.get("McLaren", 0) + 1.2
+
     preds: list[dict] = []
     for race in CALENDAR_2026:
         X_row = np.array(
             [[TARGET_SEASON, race["round"], len(race["circuit"])]], dtype=float
         )
-        label = int(clf.predict(X_row)[0])
+        # Use probabilities instead of absolute winner
+        probas = clf.predict_proba(X_row)[0]
+        
+        # Apply off-track sentiment modifiers
+        adj_probas = probas.copy()
+        for i, team in label_to_team.items():
+            if "Ferrari" in team:
+                boost = sentiments.get("Ferrari", 0.0)
+            elif "McLaren" in team:
+                boost = sentiments.get("McLaren", 0.0)
+            else:
+                boost = sentiments.get(team, 0.0)
+                
+            if boost > 0:
+                adj_probas[i] *= (1 + boost)
+            elif boost < 0:
+                adj_probas[i] *= max(0.1, (1 + boost * 0.5))
+                
+        # Normalize
+        adj_probas /= adj_probas.sum()
+            
+        # Add dynamic chaos by sampling according to weighted probabilities!
+        label = np.random.choice(len(label_to_team), p=adj_probas)
         team = label_to_team.get(label, "Unknown Team")
+        
         preds.append(
             {
                 "round": race["round"],

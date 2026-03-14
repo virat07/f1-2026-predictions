@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { getCircuitImage } from '../utils/assetMapper'
 import { races as staticRaces } from '../data/f1Data'
 import './RaceCalendar.css'
 
@@ -88,6 +89,12 @@ function RaceCalendar() {
               <p className="race-circuit">{race.circuit}</p>
               {race.date && <p className="race-date">📅 {race.date}</p>}
               <div className="race-prediction">{race.prediction}</div>
+              <img 
+                className="circuit-map" 
+                src={getCircuitImage(race.circuit)} 
+                alt={`${race.circuit} map`} 
+                onError={(e) => { e.target.style.display = 'none'; }} 
+              />
             </div>
           ))}
         </div>

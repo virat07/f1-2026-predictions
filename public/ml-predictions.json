@@ -27,7 +27,7 @@
       "round": 4,
       "name": "Bahrain Grand Prix",
       "circuit": "Sakhir",
-      "predictedWinner": "McLaren",
+      "predictedWinner": "Mercedes",
       "predictedPodium": []
     },
     {
@@ -90,7 +90,7 @@
       "round": 13,
       "name": "Hungarian Grand Prix",
       "circuit": "Hungaroring",
-      "predictedWinner": "McLaren",
+      "predictedWinner": "Mercedes",
       "predictedPodium": []
     },
     {
@@ -139,7 +139,7 @@
       "round": 20,
       "name": "Mexican Grand Prix",
       "circuit": "Autodromo Hermanos Rodriguez",
-      "predictedWinner": "Mercedes",
+      "predictedWinner": "McLaren",
       "predictedPodium": []
     },
     {
@@ -160,7 +160,7 @@
       "round": 23,
       "name": "Qatar Grand Prix",
       "circuit": "Lusail International",
-      "predictedWinner": "Mercedes",
+      "predictedWinner": "Red Bull Racing",
       "predictedPodium": []
     },
     {
@@ -187,7 +187,7 @@
         "name": "L NORRIS",
         "number": "1",
         "team": "McLaren",
-        "points": 160.0,
+        "points": 135.0,
         "position": 2,
         "gradient": "linear-gradient(135deg, #ff6b35, #e8002d)",
         "teamClass": "ml",
@@ -197,7 +197,7 @@
         "name": "M VERSTAPPEN",
         "number": "3",
         "team": "Red Bull Racing",
-        "points": 33.0,
+        "points": 58.0,
         "position": 3,
         "gradient": "linear-gradient(135deg, #ff6b35, #e8002d)",
         "teamClass": "ml",
@@ -370,14 +370,14 @@
     {
       "rank": 2,
       "name": "McLaren",
-      "points": 160.0,
+      "points": 135.0,
       "color": "#e8002d",
       "note": "Projected from ML predictions & 2026 results."
     },
     {
       "rank": 3,
       "name": "Red Bull Racing",
-      "points": 33.0,
+      "points": 58.0,
       "color": "#e8002d",
       "note": "Projected from ML predictions & 2026 results."
     },
