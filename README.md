@@ -7,6 +7,20 @@ A premium, real-time prediction platform for the 2026 Formula 1 season. Built fo
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
 ![Automation](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="./screenshots/dashboard.png" width="800" alt="Dashboard View">
+  <br>
+  <em>Interactive Race Calendar with AI Predictions and User Entry</em>
+</p>
+
+<p align="center">
+  <img src="./screenshots/leaderboard.png" width="800" alt="Leaderboard View">
+  <br>
+  <em>Global Leaderboard with Real-time Prediction Tracking</em>
+</p>
+
 ## ✨ Features
 
 - 🏎️ **Live Race Calendar**: Full 24-round 2026 schedule with smart detection for **Sprint Weekends**.
