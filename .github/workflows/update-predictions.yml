@@ -4,13 +4,19 @@ on:
   schedule:
     # Runs every Monday at 08:00 UTC (after typical race weekends)
     - cron: '0 8 * * 1'
-  workflow_dispatch: # Allows you to manually trigger the workflow from the GitHub UI
+  workflow_dispatch:
+    inputs:
+      force_retrain:
+        description: 'Force model retrain even if cache is valid'
+        required: false
+        default: 'false'
 
 permissions:
   contents: write
 
 jobs:
   update-ml-predictions:
+    name: Scrape → Train → Export
     runs-on: ubuntu-latest
 
     steps:
@@ -21,30 +27,49 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip' # cache pip dependencies
+          cache: 'pip'
 
+      # Cache FastF1 HTTP data — saves 10-20 min on repeat runs
       - name: Cache FastF1 data
         uses: actions/cache@v4
         with:
-          path: ~/.fastf1-cache
-          key: fastf1-cache-${{ runner.os }}-${{ github.run_id }}
+          path: ml/processed/fastf1_cache
+          key: fastf1-${{ runner.os }}-${{ hashFiles('ml/config.py') }}-${{ github.run_id }}
           restore-keys: |
-            fastf1-cache-${{ runner.os }}-
+            fastf1-${{ runner.os }}-${{ hashFiles('ml/config.py') }}-
+            fastf1-${{ runner.os }}-
+
+      # Cache trained models — skip retraining if ml code hasn't changed
+      - name: Cache trained models
+        id: model-cache
+        uses: actions/cache@v4
+        with:
+          path: ml/models
+          key: models-${{ runner.os }}-${{ hashFiles('ml/config.py', 'ml/features/features.py', 'ml/train.py') }}
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r ml/requirements.txt
+        run: pip install -r ml/requirements.txt
 
-      - name: Run prediction scripts
-        run: |
-          python -m ml.scrape_news
-          python -m ml.train
-          python -m ml.export_predictions
+      # Step 1 — scrape news sentiment (non-blocking if it fails)
+      - name: Scrape F1 news sentiment
+        run: python -m ml.scrape_news
+        continue-on-error: true
 
+      # Step 2 — retrain only if models aren't cached or force flag is set
+      - name: Train models
+        if: steps.model-cache.outputs.cache-hit != 'true' || github.event.inputs.force_retrain == 'true'
+        run: python -m ml.train
+
+      # Step 3 — always export fresh predictions (uses cached models if available)
+      - name: Export predictions
+        run: python -m ml.export_predictions
+
+      # Step 4 — commit ml-predictions.json back to repo for Vercel to serve
       - name: Commit and push if changed
         run: |
-          git config --global user.name "github-actions[bot]"
+          git config --global user.name  "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/ml-predictions.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: Update ML predictions after race" && git push)
+          git add public/ml-predictions.json ml/models/*.joblib
+          git diff --quiet && git diff --staged --quiet || (
+            git commit -m "chore: Update ML predictions after race [skip ci]" && git push
+          )

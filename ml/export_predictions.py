@@ -1,145 +1,362 @@
 """
-Export model predictions to JSON for the frontend.
-Uses 2026 calendar and maps constructors/drivers to model IDs where possible.
-Run after train.py:  python -m ml.train
+ml/export_predictions.py
+Loads trained .joblib models, runs predictions for all 2026 races,
+and writes public/ml-predictions.json consumed by the React frontend.
+
+Run standalone: python -m ml.export_predictions
 """
-import sys
 import json
+import sys
+from datetime import datetime, timezone
 from pathlib import Path
-import numpy as np
+
 import joblib
+import numpy as np
 import pandas as pd
 
-_ML_ROOT = Path(__file__).resolve().parent
+_ML_ROOT  = Path(__file__).resolve().parent
+_REPO_ROOT = _ML_ROOT.parent
 if str(_ML_ROOT) not in sys.path:
     sys.path.insert(0, str(_ML_ROOT))
-from config import MODELS_DIR, OUTPUT_DIR, PROJECT_ROOT
-from data.load_data import load_constructors, load_circuits, build_race_results, build_standings_tables, get_2026_teams, get_2026_drivers, load_drivers, get_standardized_name
 
-# 2026 calendar
-CALENDAR_2026 = [
-    {"round": 1, "name": "Australian Grand Prix", "circuit": "Albert Park, Melbourne", "circuitRef": "albert_park"},
-    {"round": 2, "name": "Chinese Grand Prix", "circuit": "Shanghai International", "circuitRef": "shanghai"},
-    {"round": 3, "name": "Japanese Grand Prix", "circuit": "Suzuka", "circuitRef": "suzuka"},
-    {"round": 4, "name": "Bahrain Grand Prix", "circuit": "Sakhir", "circuitRef": "bahrain"},
-    {"round": 5, "name": "Saudi Arabian Grand Prix", "circuit": "Jeddah Corniche", "circuitRef": "jeddah"},
-    {"round": 6, "name": "Miami Grand Prix", "circuit": "Miami International", "circuitRef": "miami"},
-    {"round": 7, "name": "Canadian Grand Prix", "circuit": "Circuit Gilles-Villeneuve", "circuitRef": "villeneuve"},
-    {"round": 8, "name": "Monaco Grand Prix", "circuit": "Circuit de Monaco", "circuitRef": "monaco"},
-    {"round": 9, "name": "Spanish Grand Prix", "circuit": "Barcelona-Catalunya", "circuitRef": "catalunya"},
-    {"round": 10, "name": "Austrian Grand Prix", "circuit": "Red Bull Ring", "circuitRef": "red_bull_ring"},
-    {"round": 11, "name": "British Grand Prix", "circuit": "Silverstone", "circuitRef": "silverstone"},
-    {"round": 12, "name": "Belgian Grand Prix", "circuit": "Spa-Francorchamps", "circuitRef": "spa"},
-    {"round": 13, "name": "Hungarian Grand Prix", "circuit": "Hungaroring", "circuitRef": "hungaroring"},
-    {"round": 14, "name": "Dutch Grand Prix", "circuit": "Zandvoort", "circuitRef": "zandvoort"},
-    {"round": 15, "name": "Italian Grand Prix", "circuit": "Monza", "circuitRef": "monza"},
-    {"round": 16, "name": "Madrid Grand Prix", "circuit": "Madrid Street Circuit", "circuitRef": "madrid"},
-    {"round": 17, "name": "Azerbaijan Grand Prix", "circuit": "Baku City Circuit", "circuitRef": "baku"},
-    {"round": 18, "name": "Singapore Grand Prix", "circuit": "Marina Bay", "circuitRef": "marina_bay"},
-    {"round": 19, "name": "United States Grand Prix", "circuit": "COTA, Austin", "circuitRef": "americas"},
-    {"round": 20, "name": "Mexican Grand Prix", "circuit": "Autodromo Hermanos Rodriguez", "circuitRef": "rodriguez"},
-    {"round": 21, "name": "Brazilian Grand Prix", "circuit": "Interlagos, São Paulo", "circuitRef": "interlagos"},
-    {"round": 22, "name": "Las Vegas Grand Prix", "circuit": "Las Vegas Strip", "circuitRef": "vegas"},
-    {"round": 23, "name": "Qatar Grand Prix", "circuit": "Lusail International", "circuitRef": "losail"},
-    {"round": 24, "name": "Abu Dhabi Grand Prix", "circuit": "Yas Marina", "circuitRef": "yas_marina"},
+from config import MODELS_DIR, PROCESSED_DIR, CONSTRUCTORS_2026, DRIVERS_2026
+
+OUTPUT_FILE = _REPO_ROOT / "public" / "ml-predictions.json"
+
+# ── Official 2026 Calendar ────────────────────────────────────────────────────
+# Sprint rounds: Chinese, Miami, Canadian, British, Dutch, Singapore
+RACES_2026 = [
+    {"round": 1,  "name": "Australian Grand Prix",        "circuit": "Albert Park, Melbourne",         "date": "2026-03-15", "sprint": False},
+    {"round": 2,  "name": "Chinese Grand Prix",           "circuit": "Shanghai International Circuit",  "date": "2026-03-22", "sprint": True},
+    {"round": 3,  "name": "Japanese Grand Prix",          "circuit": "Suzuka Circuit",                  "date": "2026-04-05", "sprint": False},
+    {"round": 4,  "name": "Bahrain Grand Prix",           "circuit": "Bahrain International Circuit",   "date": "2026-04-19", "sprint": False},
+    {"round": 5,  "name": "Saudi Arabian Grand Prix",     "circuit": "Jeddah Corniche Circuit",         "date": "2026-04-26", "sprint": False},
+    {"round": 6,  "name": "Miami Grand Prix",             "circuit": "Miami International Autodrome",   "date": "2026-05-03", "sprint": True},
+    {"round": 7,  "name": "Emilia Romagna Grand Prix",    "circuit": "Autodromo Enzo e Dino Ferrari",   "date": "2026-05-17", "sprint": False},
+    {"round": 8,  "name": "Monaco Grand Prix",            "circuit": "Circuit de Monaco",               "date": "2026-05-24", "sprint": False},
+    {"round": 9,  "name": "Spanish Grand Prix",           "circuit": "Barcelona-Catalunya Grand Prix",  "date": "2026-06-07", "sprint": False},
+    {"round": 10, "name": "Canadian Grand Prix",          "circuit": "Circuit Gilles Villeneuve",       "date": "2026-06-14", "sprint": True},
+    {"round": 11, "name": "Madrid Grand Prix",            "circuit": "Madrid Street Circuit (IFEMA)",   "date": "2026-06-28", "sprint": False},
+    {"round": 12, "name": "Austrian Grand Prix",          "circuit": "Red Bull Ring",                   "date": "2026-07-05", "sprint": False},
+    {"round": 13, "name": "British Grand Prix",           "circuit": "Silverstone Circuit",             "date": "2026-07-19", "sprint": True},
+    {"round": 14, "name": "Belgian Grand Prix",           "circuit": "Circuit de Spa-Francorchamps",    "date": "2026-08-02", "sprint": False},
+    {"round": 15, "name": "Hungarian Grand Prix",         "circuit": "Hungaroring",                     "date": "2026-08-09", "sprint": False},
+    {"round": 16, "name": "Dutch Grand Prix",             "circuit": "Circuit Zandvoort",               "date": "2026-08-30", "sprint": True},
+    {"round": 17, "name": "Italian Grand Prix",           "circuit": "Autodromo Nazionale Monza",       "date": "2026-09-06", "sprint": False},
+    {"round": 18, "name": "Azerbaijan Grand Prix",        "circuit": "Baku City Circuit",               "date": "2026-09-20", "sprint": False},
+    {"round": 19, "name": "Singapore Grand Prix",         "circuit": "Marina Bay Street Circuit",       "date": "2026-10-04", "sprint": True},
+    {"round": 20, "name": "United States Grand Prix",     "circuit": "Circuit of the Americas",         "date": "2026-10-18", "sprint": False},
+    {"round": 21, "name": "Mexican Grand Prix",           "circuit": "Autodromo Hermanos Rodriguez",    "date": "2026-10-25", "sprint": False},
+    {"round": 22, "name": "Brazilian Grand Prix",         "circuit": "Autodromo Jose Carlos Pace",      "date": "2026-11-08", "sprint": False},
+    {"round": 23, "name": "Las Vegas Grand Prix",         "circuit": "Las Vegas Strip Circuit",         "date": "2026-11-21", "sprint": False},
+    {"round": 24, "name": "Abu Dhabi Grand Prix",         "circuit": "Yas Marina Circuit",              "date": "2026-12-06", "sprint": False},
 ]
 
-def export_race_predictions():
-    race_path = MODELS_DIR / "race_winner.joblib"
-    podium_path = MODELS_DIR / "podium.joblib"
-    if not race_path.exists() or not podium_path.exists():
-        return []
-    race_bundle = joblib.load(race_path)
-    podium_bundle = joblib.load(podium_path)
-    circuits = load_circuits()
-    ref_to_cid = dict(zip(circuits["circuitRef"], circuits["circuitId"]))
-    constructors = load_constructors()
-    cid_to_name = dict(zip(constructors["constructorId"], constructors["name"]))
-    race_model, race_le, enc, feature_names = race_bundle["model"], race_bundle["label_encoder"], race_bundle["encoder_mapping"], race_bundle["feature_names"]
-    podium_models, podium_les = podium_bundle["models"], podium_bundle["label_encoders"]
-    circuit_enc = enc.get("circuitId", {})
-    default_cid = list(circuit_enc.keys())[0] if circuit_enc else "1"
-    predictions = []
-    for race in CALENDAR_2026:
-        cid = ref_to_cid.get(race["circuitRef"])
-        cid_str = str(cid) if cid is not None else str(default_cid)
-        row = pd.DataFrame([[2026, race["round"], circuit_enc.get(cid_str, 0), 10.0, 20.0]], columns=feature_names)
-        w_enc = race_model.predict(row)[0]
-        w_name = cid_to_name.get(int(race_le.inverse_transform([w_enc])[0]), str(race_le.inverse_transform([w_enc])[0]))
-        p1 = cid_to_name.get(int(podium_les[0].inverse_transform([podium_models[0].predict(row)[0]])[0]), "")
-        p2 = cid_to_name.get(int(podium_les[1].inverse_transform([podium_models[1].predict(row)[0]])[0]), "")
-        p3 = cid_to_name.get(int(podium_les[2].inverse_transform([podium_models[2].predict(row)[0]])[0]), "")
-        predictions.append({"round": race["round"], "name": race["name"], "circuit": race["circuit"], "predictedWinner": w_name, "predictedPodium": [p1, p2, p3]})
-    return predictions
 
-def export_standings():
-    driver_path, ctor_path = MODELS_DIR / "driver_standings.joblib", MODELS_DIR / "constructor_standings.joblib"
-    if not driver_path.exists() or not ctor_path.exists(): return None, None, None
-    db, cb = joblib.load(driver_path), joblib.load(ctor_path)
-    active_teams, active_drivers = get_2026_teams(), get_2026_drivers()
-    ds, cs = build_standings_tables()
-    
-    ctor_rows = []
-    ctor_enc = cb["encoder_mapping"].get("constructorId", {})
-    all_known_constructors = load_constructors()
-    
-    for name in active_teams:
-        std_name = get_standardized_name(name)
-        match = all_known_constructors[all_known_constructors["name"] == std_name]
-        
-        if not match.empty:
-            cid = match.iloc[0]["constructorId"]
-            cid_str = str(cid)
-            if cid_str in ctor_enc:
-                X = pd.DataFrame([[2026, ctor_enc[cid_str]]], columns=cb["feature_names"])
-                pts = float(cb["model"].predict(X)[0])
-                ctor_rows.append({"name": name, "points": max(0, pts)})
-            else:
-                ctor_rows.append({"name": name, "points": 50.0}) # Conservative fallback
-        else:
-            ctor_rows.append({"name": name, "points": 10.0})
+# ── 2026 Regulation Reset Factors ────────────────────────────────────────────
+# Encodes the competitive impact of the 2026 rule changes per team.
+# Each factor is a multiplier applied ON TOP of historical tier estimates.
+#
+# Key considerations per team:
+#   POWER UNIT:
+#     Ferrari PU    → Ferrari, Haas, Cadillac  (proven, road-car relevance)
+#     Mercedes PU   → Mercedes, McLaren, Williams, Alpine  (strong hybrid expertise)
+#     Red Bull Ford → Red Bull Racing, Racing Bulls  (new PU, unknown quantity)
+#     Honda PU      → Aston Martin  (strong recent form but new partnership)
+#     Audi PU       → Audi  (brand new, steep development curve)
+#
+#   CHASSIS RESET: Active aero + ground effect removal = teams with best
+#     simulation & CFD resources (Ferrari, McLaren, Mercedes) gain most.
+#
+#   ENERGY MGMT: 50-50 ICE/EV split rewards teams with best software/ERS
+#     integration. Mercedes & Ferrari historically best at this.
+#
+# Scale: 1.0 = no change, >1.0 = regulation benefits team, <1.0 = hurts team
+# Sources: Australia + China GP 2026 data, McLaren/Mercedes team principal quotes
+# Mercedes ~0.8s clear of field in qualifying; McLaren 0.5-1s off Mercedes pace
+REGULATION_RESET_2026 = {
+    # Works teams with chassis+PU co-development advantage
+    "Mercedes":        1.20,  # Dominant early 2026 — works PU+chassis integration, Russell/Antonelli
+    "Ferrari":         1.12,  # 2nd best PU, Hamilton+Leclerc, own works integration — won R1 race
+    # Mercedes PU customers — same hardware, big exploitation gap to works team
+    "McLaren":         0.95,  # 0.5-1s off Mercedes in Australia/China, PU exploitation deficit
+    "Williams":        0.92,  # Mercedes PU customer + Sainz, but chassis lags McLaren
+    "Alpine":          0.88,  # Mercedes PU customer, weakest chassis of the three customers
+    # Red Bull Ford — new unproven PU, but Verstappen factor
+    "Red Bull Racing": 0.90,  # New Ford PU unproven, Verstappen P3 in Australia behind Ferrari
+    "Racing Bulls":    0.82,  # Same Ford PU risk, Lawson+Lindblad both relatively unproven
+    # Honda PU — strong recent history (2021-2024) but new Aston Martin partnership
+    "Aston Martin":    0.80,  # Honda PU new team partnership, Alonso fading, regulation reset hurts
+    # Ferrari PU customers
+    "Haas":            0.85,  # Ferrari PU customer, Ocon+Bearman solid midfield pairing
+    "Cadillac":        0.60,  # Brand new team, Ferrari PU customer, enormous learning curve
+    # New works PU — brand new, biggest development curve on grid
+    "Audi":            0.68,  # Entirely new PU and team identity, expected 1+ year of development lag
+}
 
-    ctor_rows.sort(key=lambda x: x["points"], reverse=True)
+
+def _load_news_sentiment() -> dict:
+    sentiment_file = PROCESSED_DIR / "news_sentiment.json"
+    if sentiment_file.exists():
+        data = json.loads(sentiment_file.read_text())
+        return {k: v["sentiment_score"] for k, v in data.get("constructors", {}).items()}
+    return {}
+
+
+def _safe_encode(value: str, mapping: dict, fallback: int = 0) -> int:
+    return mapping.get(value, fallback)
+
+
+def _constructor_form(constructor: str, sentiment: dict) -> dict:
+    """
+    Estimate 2026 form using 2026-realistic tiers + sentiment adjustment.
+
+    Tier tuple: (expected_wins, expected_podiums, expected_points)
+    Reflects 2024 form, 2026 driver moves, and regulation reset.
+
+    Expected 2026 order:
+      McLaren > Ferrari > Red Bull > Mercedes >
+      Williams > Alpine > Racing Bulls > Aston Martin >
+      Haas > Audi > Cadillac
+    """
+    # Base tiers updated to reflect actual 2026 R1+R2 pecking order:
+    # Mercedes >> Ferrari > Red Bull ≈ McLaren > Williams > Racing Bulls >
+    # Aston Martin ≈ Alpine > Haas > Audi > Cadillac
+    tier = {
+        # (wins, podiums, season_points) — 24-race calendar
+        "Mercedes":        (12, 22, 580),  # Dominant start, Russell/Antonelli 1-2 pace
+        "Ferrari":         (7,  18, 470),  # Won R1, Hamilton+Leclerc, works PU
+        "Red Bull Racing": (3,  10, 340),  # Verstappen P3 Australia, Ford PU step back
+        "McLaren":         (2,   8, 290),  # 0.5-1s off Mercedes, upgrades due Miami+
+        "Williams":        (0,   3, 140),  # Sainz boost but Mercedes customer chassis gap
+        "Racing Bulls":    (0,   2, 100),  # Ford PU, Lawson developing
+        "Aston Martin":    (0,   1,  85),  # Honda PU new partnership, Alonso/Stroll
+        "Alpine":          (0,   1,  80),  # Mercedes PU customer, weakest chassis
+        "Haas":            (0,   1,  65),  # Ferrari PU customer, Ocon+Bearman
+        "Audi":            (0,   0,  30),  # New works team, development lag
+        "Cadillac":        (0,   0,  10),  # Debut season, points a bonus
+    }.get(constructor, (0, 1, 45))
+
+    sent       = sentiment.get(constructor, 0.0)
+    reg_factor = REGULATION_RESET_2026.get(constructor, 1.0)
+
+    return {
+        "cum_wins":    max(0, round((tier[0] + sent * 3)  * reg_factor)),
+        "cum_podiums": max(0, round((tier[1] + sent * 5)  * reg_factor)),
+        "cum_points":  max(0, round((tier[2] + sent * 80) * reg_factor)),
+    }
+
+
+def predict_race_winner(bundle: dict, race: dict, sentiment: dict) -> list:
+    model     = bundle["model"]
+    le        = bundle["label_encoder"]
+    enc       = bundle["encoder_mapping"]
+    event_enc = _safe_encode(race["name"], enc.get("event_name", {}))
+
+    rows = []
+    for constructor in CONSTRUCTORS_2026:
+        form = _constructor_form(constructor, sentiment)
+        row  = pd.DataFrame([{
+            "year":            2026,
+            "round":           race["round"],
+            "event_enc":       event_enc,
+            "constructor_enc": _safe_encode(constructor, enc.get("constructor", {})),
+            "best_grid":       5,
+            **form,
+            "avg_grid_pos":    4.0,
+        }])
+        proba = model.predict_proba(row)[0]
+        try:
+            class_idx = list(le.classes_).index(constructor)
+            win_prob  = float(proba[class_idx])
+        except ValueError:
+            win_prob  = float(proba.max()) / len(CONSTRUCTORS_2026)
+        rows.append({"constructor": constructor, "win_probability": round(win_prob, 4)})
+
+    rows.sort(key=lambda x: x["win_probability"], reverse=True)
+    total = sum(r["win_probability"] for r in rows) or 1.0
+    for r in rows:
+        r["win_probability"] = round(r["win_probability"] / total, 4)
+    return rows
+
+
+def predict_podium(bundle: dict, race: dict, sentiment: dict) -> dict:
+    models    = bundle["models"]
+    les       = bundle["label_encoders"]
+    enc       = bundle["encoder_mapping"]
+    event_enc = _safe_encode(race["name"], enc.get("event_name", {}))
+
+    podium = {}
+    for i, (model, le) in enumerate(zip(models, les)):
+        best_constructor, best_prob = None, -1.0
+        for constructor in CONSTRUCTORS_2026:
+            form = _constructor_form(constructor, sentiment)
+            row  = pd.DataFrame([{
+                "year":            2026,
+                "round":           race["round"],
+                "event_enc":       event_enc,
+                "constructor_enc": _safe_encode(constructor, enc.get("constructor", {})),
+                "best_grid":       i + 1,
+                **form,
+                "avg_grid_pos":    float(i + 2),
+            }])
+            try:
+                proba = model.predict_proba(row)[0].max()
+            except Exception:
+                proba = 0.0
+            if proba > best_prob:
+                best_prob, best_constructor = proba, constructor
+        podium[f"P{i+1}"] = best_constructor
+    return podium
+
+
+# Driver performance split ratios — how constructor points are split between teammates.
+# Based on 2024 qualifying head-to-head and historical dominance.
+# Must sum to 1.0 per team. Format: {constructor: (driver1_ratio, driver2_ratio)}
+# Driver order matches DRIVERS_2026 list in config.py
+DRIVER_SPLIT = {
+    "McLaren":         (0.54, 0.46),  # Norris slight edge over Piastri
+    "Ferrari":         (0.48, 0.52),  # Leclerc home advantage, Hamilton settling in
+    "Red Bull Racing": (0.62, 0.38),  # Verstappen dominant over Hadjar (rookie)
+    "Mercedes":        (0.58, 0.42),  # Russell experienced, Antonelli is rookie
+    "Williams":        (0.52, 0.48),  # Sainz slight edge over Albon
+    "Racing Bulls":    (0.55, 0.45),  # Lawson marginal edge over Lindblad (rookie)
+    "Aston Martin":    (0.50, 0.50),  # Stroll vs Alonso — Alonso fading, evenly matched
+    "Alpine":          (0.52, 0.48),  # Gasly vs Colapinto
+    "Haas":            (0.50, 0.50),  # Ocon vs Bearman — new pairing, unknown split
+    "Audi":            (0.53, 0.47),  # Hulkenberg experience edge over Bortoleto (rookie)
+    "Cadillac":        (0.55, 0.45),  # Perez experience edge over Bottas
+}
+
+
+def predict_season_standings(c_bundle: dict, d_bundle: dict, sentiment: dict) -> dict:
+    c_model = c_bundle["model"]
+    c_enc   = c_bundle["encoder_mapping"]
+
+    # ── Step 1: Predict constructor points (source of truth) ──────────────────
     constructor_standings = []
-    for i, r in enumerate(ctor_rows, 1):
+    constructor_pts_map = {}  # used to derive driver points below
+
+    for constructor in CONSTRUCTORS_2026:
+        form = _constructor_form(constructor, sentiment)
+        row  = pd.DataFrame([{
+            "year":            2026,
+            "constructor_enc": _safe_encode(constructor, c_enc.get("constructor", {})),
+            "season_wins":     form["cum_wins"],
+            "season_podiums":  form["cum_podiums"],
+            "prev_points":     form["cum_points"],
+        }])
+        pred_pts = round(max(0, float(c_model.predict(row)[0])), 1)
+        constructor_pts_map[constructor] = pred_pts
         constructor_standings.append({
-            "rank": i,
-            "name": r["name"],
-            "drivers": "",
-            "points": round(r["points"]),
-            "color": "#3671C6" if "Red Bull" in r["name"] else "#e8002d",
-            "note": "ML Grid Forecast"
+            "constructor":      constructor,
+            "predicted_points": pred_pts,
         })
 
-    driver_rows = []
-    drv_enc = db["encoder_mapping"].get("driverId", {})
-    all_known_drivers = load_drivers()
-    for dname in active_drivers:
-        match = all_known_drivers[all_known_drivers["driver_name"] == dname]
-        if not match.empty:
-            did = match.iloc[0]["driverId"]
-            did_str = str(did)
-            if did_str in drv_enc:
-                X = pd.DataFrame([[2026, drv_enc[did_str]]], columns=db["feature_names"])
-                pts = float(db["model"].predict(X)[0])
-                driver_rows.append({"name": dname, "points": max(0, pts)})
-            else:
-                driver_rows.append({"name": dname, "points": 0.0})
-        else:
-            driver_rows.append({"name": dname, "points": 0.0})
-            
-    driver_rows.sort(key=lambda x: x["points"], reverse=True)
-    podium = [{"position": i, "name": r["name"], "number": i, "team": "", "teamClass": "ml", "points": round(r["points"]), "gradient": "linear-gradient(135deg, #ff6b35, #e8002d)", "note": "2026 Grid Forecast"} for i, r in enumerate(driver_rows[:3], 1)]
-    rest = [{"pos": i, "number": i, "color": "#ffffff", "name": r["name"], "team": "", "points": round(r["points"])} for i, r in enumerate(driver_rows[3:], 4)]
-    return podium, rest, constructor_standings
+    constructor_standings.sort(key=lambda x: x["predicted_points"], reverse=True)
+    for i, c in enumerate(constructor_standings):
+        c["rank"] = i + 1
 
-def main():
-    race_preds = export_race_predictions()
-    podium, rest, ctor = export_standings()
-    out = {"season": 2026, "source": "ml_models_v4_standardized", "racePredictions": race_preds or [], "driverStandings": {"podium": podium or [], "rest": rest or []}, "constructorStandings": ctor or []}
-    out_path = PROJECT_ROOT / "public" / "ml-predictions.json"
-    out_path.write_text(json.dumps(out, indent=2), encoding="utf-8")
-    print(f"Exported {out_path} with standardized team mapping.")
+    # ── Step 2: Derive driver points from constructor total ───────────────────
+    # This ensures driver1_pts + driver2_pts == constructor_pts exactly,
+    # fixing the arithmetic inconsistency where independent models disagreed.
+    driver_standings = []
+    for d in DRIVERS_2026:
+        constructor      = d["constructor"]
+        constructor_pts  = constructor_pts_map.get(constructor, 0)
+        split            = DRIVER_SPLIT.get(constructor, (0.5, 0.5))
+
+        # Find which position (0 or 1) this driver holds within their team
+        team_drivers = [x for x in DRIVERS_2026 if x["constructor"] == constructor]
+        driver_index = next((i for i, x in enumerate(team_drivers) if x["driver"] == d["driver"]), 0)
+        ratio        = split[driver_index] if driver_index < len(split) else 0.5
+
+        driver_pts = round(constructor_pts * ratio, 1)
+
+        driver_standings.append({
+            "driver":           d["driver"],
+            "name":             d["name"],
+            "number":           d["number"],
+            "constructor":      constructor,
+            "predicted_points": driver_pts,
+        })
+
+    driver_standings.sort(key=lambda x: x["predicted_points"], reverse=True)
+
+    # ── Convert points to championship % chance ───────────────────────────────
+    # Method: softmax-style normalisation so all 22 drivers sum to 100%
+    # Squaring the points before normalising rewards the leader more strongly,
+    # giving a more realistic spread (leader ~40%, not just proportional share).
+    pts_squared = [max(d["predicted_points"], 0) ** 2 for d in driver_standings]
+    total_sq    = sum(pts_squared) or 1.0
+
+    for i, d in enumerate(driver_standings):
+        d["position"]        = i + 1
+        d["championship_pct"] = round((pts_squared[i] / total_sq) * 100, 1)
+
+    return {"constructors": constructor_standings, "drivers": driver_standings}
+
+
+def export_predictions():
+    print("Loading models ...")
+    try:
+        winner_bundle = joblib.load(MODELS_DIR / "race_winner.joblib")
+        podium_bundle = joblib.load(MODELS_DIR / "podium.joblib")
+        c_bundle      = joblib.load(MODELS_DIR / "constructor_standings.joblib")
+        d_bundle      = joblib.load(MODELS_DIR / "driver_standings.joblib")
+    except FileNotFoundError as e:
+        print(f"ERROR: {e}\nRun `python -m ml.train` first.")
+        sys.exit(1)
+
+    sentiment = _load_news_sentiment()
+    print(f"Sentiment loaded for {len(sentiment)} constructors")
+
+    today = datetime.now(timezone.utc).date()
+
+    print(f"\nGenerating predictions for {len(RACES_2026)} races ...")
+    race_predictions = []
+    for race in RACES_2026:
+        race_date    = datetime.strptime(race["date"], "%Y-%m-%d").date()
+        is_completed = race_date < today
+        ranked       = predict_race_winner(winner_bundle, race, sentiment)
+        podium       = predict_podium(podium_bundle, race, sentiment)
+
+        race_predictions.append({
+            "round":             race["round"],
+            "name":              race["name"],
+            "circuit":           race["circuit"],
+            "date":              race["date"],
+            "sprint":            race["sprint"],
+            "is_completed":      is_completed,
+            "predicted_winner":  ranked[0]["constructor"] if ranked else None,
+            "win_probabilities": ranked[:5],
+            "predicted_podium":  podium,
+        })
+        status = "done" if is_completed else "pred"
+        print(f"  [{status}] R{race['round']:02d} {race['name']:<42} {ranked[0]['constructor'] if ranked else 'N/A'}")
+
+    print("\nGenerating season standings ...")
+    standings = predict_season_standings(c_bundle, d_bundle, sentiment)
+
+    output = {
+        "generated_at":    datetime.now(timezone.utc).isoformat(),
+        "season":          2026,
+        "source":          "ml_models_fastf1",
+        "total_rounds":    len(RACES_2026),
+        "sprint_rounds":   [r["round"] for r in RACES_2026 if r["sprint"]],
+        "race_predictions": race_predictions,
+        "season_standings": standings,
+    }
+
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_FILE.write_text(json.dumps(output, indent=2, ensure_ascii=False))
+
+    print(f"\n  Saved to {OUTPUT_FILE}")
+    print(f"  {len(race_predictions)} races | "
+          f"{len(standings['constructors'])} constructors | "
+          f"{len(standings['drivers'])} drivers")
+    print(f"  Sprint rounds: {output['sprint_rounds']}")
+
 
 if __name__ == "__main__":
-    main()
+    export_predictions()

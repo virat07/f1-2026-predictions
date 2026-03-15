@@ -1,24 +1,97 @@
-name: F1 Auto-Sync Data
+name: F1 Auto-Sync & Retrain
 
 on:
   schedule:
-    # Runs every Sunday at 14:00 UTC (Post-Race time)
+    # Runs every Sunday at 14:00 UTC (post-race)
     - cron: '0 14 * * 0'
-  workflow_dispatch: # Allows manual trigger from GitHub UI
+    # Retrains every Monday at 08:00 UTC with fresh data
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+    inputs:
+      force_retrain:
+        description: 'Force model retrain even if no new data'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
 
 jobs:
+  # ── Job 1: Sync actual race results to Supabase ──────────────
   sync_results:
+    name: Sync Race Results
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-          
-      - name: Install dependencies
+          python-version: '3.11'
+
+      - name: Install sync dependencies
         run: pip install supabase
-        
-      - name: Run Sync Script
+
+      - name: Run sync script
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: python sync_results.py
+
+  # ── Job 2: Scrape news + retrain models + export predictions ──
+  retrain_and_export:
+    name: Retrain ML Models & Export Predictions
+    runs-on: ubuntu-latest
+    needs: sync_results   # always runs after sync, even if sync had no changes
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      # Cache FastF1 HTTP data between runs — saves 10-20 min on repeat runs
+      - name: Cache FastF1 data
+        uses: actions/cache@v4
+        with:
+          path: ml/processed/fastf1_cache
+          key: fastf1-${{ runner.os }}-${{ hashFiles('ml/config.py') }}-${{ github.run_id }}
+          restore-keys: |
+            fastf1-${{ runner.os }}-${{ hashFiles('ml/config.py') }}-
+            fastf1-${{ runner.os }}-
+
+      # Cache trained models — skip retraining if config hasn't changed
+      - name: Cache trained models
+        id: model-cache
+        uses: actions/cache@v4
+        with:
+          path: ml/models
+          key: models-${{ runner.os }}-${{ hashFiles('ml/config.py', 'ml/features/features.py', 'ml/train.py') }}
+
+      - name: Install ML dependencies
+        run: pip install -r ml/requirements.txt
+
+      - name: Scrape F1 news sentiment
+        run: python -m ml.scrape_news
+        continue-on-error: true   # don't fail the whole job if news scraping flakes
+
+      - name: Train models
+        # Skip if models are cached AND force_retrain is not set
+        if: steps.model-cache.outputs.cache-hit != 'true' || github.event.inputs.force_retrain == 'true'
+        run: python -m ml.train
+
+      - name: Export predictions to JSON
+        run: python -m ml.export_predictions
+
+      - name: Commit updated predictions
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/ml-predictions.json ml/models/*.joblib
+          git diff --cached --quiet || git commit -m "chore: update ML predictions [skip ci]"
+          git push

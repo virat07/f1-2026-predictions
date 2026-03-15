@@ -2,6 +2,40 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { getDriverImage, getTeamCarImage, getTeamImage } from '../utils/assetMapper'
 import './ConstructorStandings.css'
 
+// Official 2026 team colors
+const TEAM_COLORS = {
+  'Ferrari':        '#E8002D',
+  'Red Bull Racing':'#3671C6',
+  'Mercedes':       '#27F4D2',
+  'McLaren':        '#FF8000',
+  'Aston Martin':   '#358C75',
+  'Alpine':         '#0093CC',
+  'Williams':       '#64C4FF',
+  'Racing Bulls':   '#6692FF',
+  'Haas':           '#B6BABD',
+  'Audi':           '#BB0000',
+  'Cadillac':       '#00438D',
+}
+
+const teamDrivers = {
+  'ferrari':        ['Lewis Hamilton', 'Charles Leclerc'],
+  'red bull racing':['Max Verstappen', 'Isack Hadjar'],
+  'mercedes':       ['George Russell', 'Andrea Kimi Antonelli'],
+  'mclaren':        ['Lando Norris', 'Oscar Piastri'],
+  'aston martin':   ['Fernando Alonso', 'Lance Stroll'],
+  'alpine':         ['Pierre Gasly', 'Franco Colapinto'],
+  'williams':       ['Alexander Albon', 'Carlos Sainz'],
+  'racing bulls':   ['Liam Lawson', 'Arvid Lindblad'],
+  'haas':           ['Esteban Ocon', 'Oliver Bearman'],
+  'audi':           ['Nico Hülkenberg', 'Gabriel Bortoleto'],
+  'cadillac':       ['Sergio Pérez', 'Valtteri Bottas'],
+}
+
+const normalizeTeamName = (name) => {
+  if (!name) return ''
+  return name.toLowerCase().trim()
+}
+
 function ConstructorStandings() {
   const sectionRef = useRef(null)
   const [constructors, setConstructors] = useState([])
@@ -27,8 +61,23 @@ function ConstructorStandings() {
     fetch('/ml-predictions.json')
       .then((res) => res.json())
       .then((data) => {
-        setConstructors(data.constructorStandings || [])
-        setRacePredictions(data.racePredictions || [])
+        // ✅ FIX: new JSON uses season_standings.constructors (snake_case)
+        const rawConstructors = data.season_standings?.constructors || []
+        // ✅ FIX: new JSON uses race_predictions (snake_case)
+        const rawRacePreds = data.race_predictions || []
+
+        // ✅ FIX: map new flat objects → shape the component expects
+        const mapped = rawConstructors.map((c) => ({
+          rank:   c.rank,
+          name:   c.constructor,
+          points: Math.round(c.predicted_points),
+          color:  TEAM_COLORS[c.constructor] || '#ffffff',
+          note:   'ML Grid Forecast',
+          drivers: (teamDrivers[normalizeTeamName(c.constructor)] || []).join(' · '),
+        }))
+
+        setConstructors(mapped)
+        setRacePredictions(rawRacePreds)
       })
       .catch((err) => {
         console.error('Failed to load constructor standings predictions', err)
@@ -44,41 +93,11 @@ function ConstructorStandings() {
   }, [])
 
   const maxPoints = constructors.length ? constructors[0].points : 1
-  const normalizeTeamName = (name) => {
-    if (!name) return ''
-    const normalized = name.toLowerCase().trim()
-    const mapper = {
-      'red bull racing red bull ford': 'red bull racing',
-      'oracle red bull racing': 'red bull racing',
-      'racing bulls red bull ford': 'racing bulls',
-      'mclaren mercedes': 'mclaren',
-      'aston martin honda': 'aston martin',
-      'aston martin aramco': 'aston martin',
-      'alpine mercedes': 'alpine',
-      'haas ferrari': 'haas',
-      'williams mercedes': 'williams',
-      'cadillac ferrari': 'cadillac'
-    }
-    return mapper[normalized] || normalized
-  }
 
-  const teamDrivers = {
-    ferrari: ['Lewis Hamilton', 'Charles Leclerc'],
-    'red bull racing': ['Max Verstappen', 'Isack Hadjar'],
-    'racing bulls': ['Liam Lawson', 'Arvid Lindblad'],
-    mercedes: ['George Russell', 'Kimi Antonelli'],
-    mclaren: ['Lando Norris', 'Oscar Piastri'],
-    'aston martin': ['Fernando Alonso', 'Lance Stroll'],
-    alpine: ['Pierre Gasly', 'Franco Colapinto'],
-    haas: ['Esteban Ocon', 'Oliver Bearman'],
-    williams: ['Alexander Albon', 'Carlos Sainz'],
-    audi: ['Nico Hulkenberg', 'Gabriel Bortoleto'],
-    cadillac: ['Valtteri Bottas', 'Sergio Perez']
-  }
-
+  // ✅ FIX: count wins using predicted_winner (snake_case)
   const winsByTeam = useMemo(() => {
     return racePredictions.reduce((acc, race) => {
-      const teamKey = normalizeTeamName(race.predictedWinner)
+      const teamKey = normalizeTeamName(race.predicted_winner)
       if (!teamKey) return acc
       acc[teamKey] = (acc[teamKey] || 0) + 1
       return acc
@@ -113,11 +132,11 @@ function ConstructorStandings() {
             >
               <div className="constructor-rank">{team.rank}</div>
               <div className="constructor-color" style={{ background: team.color }}></div>
-              <img 
-                className="team-car-img" 
-                src={getTeamImage(team.name)} 
-                alt={team.name} 
-                onError={(e) => { e.target.style.display = 'none'; }} 
+              <img
+                className="team-car-img"
+                src={getTeamImage(team.name)}
+                alt={team.name}
+                onError={(e) => { e.target.style.display = 'none' }}
               />
               <div className="constructor-info">
                 <h3>
@@ -149,6 +168,7 @@ function ConstructorStandings() {
           ))}
         </div>
       </div>
+
       {selectedTeam && (
         <div
           className="constructor-modal-backdrop"
@@ -173,7 +193,7 @@ function ConstructorStandings() {
               <p className="constructor-detail-label">Selected Team</p>
               <h3 className="constructor-detail-title">{selectedTeam.name}</h3>
               <p className="constructor-detail-wins">
-                {selectedTeamWins} predicted wins in 2026
+                {selectedTeamWins} predicted win{selectedTeamWins !== 1 ? 's' : ''} in 2026
               </p>
             </div>
             <div className="constructor-detail-car-wrap">

@@ -1,0 +1,60 @@
+{
+  "scraped_at": "2026-03-15T06:40:54.245291+00:00",
+  "constructors": {
+    "Red Bull Racing": {
+      "sentiment_score": 0.0,
+      "headline_count": 0,
+      "sample_headlines": []
+    },
+    "Ferrari": {
+      "sentiment_score": 0.0,
+      "headline_count": 0,
+      "sample_headlines": []
+    },
+    "Mercedes": {
+      "sentiment_score": 0.0,
+      "headline_count": 0,
+      "sample_headlines": []
+    },
+    "McLaren": {
+      "sentiment_score": 0.0,
+      "headline_count": 0,
+      "sample_headlines": []
+    },
+    "Aston Martin": {
+      "sentiment_score": 0.0,
+      "headline_count": 0,
+      "sample_headlines": []
+    },
+    "Alpine": {
+      "sentiment_score": 0.0,
+      "headline_count": 0,
+      "sample_headlines": []
+    },
+    "Williams": {
+      "sentiment_score": 0.0,
+      "headline_count": 0,
+      "sample_headlines": []
+    },
+    "Racing Bulls": {
+      "sentiment_score": 0.0,
+      "headline_count": 0,
+      "sample_headlines": []
+    },
+    "Haas": {
+      "sentiment_score": 0.0,
+      "headline_count": 0,
+      "sample_headlines": []
+    },
+    "Audi": {
+      "sentiment_score": 0.0,
+      "headline_count": 0,
+      "sample_headlines": []
+    },
+    "Cadillac": {
+      "sentiment_score": 0.0,
+      "headline_count": 0,
+      "sample_headlines": []
+    }
+  }
+}
