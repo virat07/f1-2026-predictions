@@ -56,10 +56,13 @@ def build_podium_dataset(df: pd.DataFrame | None = None) -> tuple[pd.DataFrame, 
     p1 = podium[podium["positionOrder"] == 1][["raceId", "constructorId"]].rename(columns={"constructorId": "p1"})
     p2 = podium[podium["positionOrder"] == 2][["raceId", "constructorId"]].rename(columns={"constructorId": "p2"})
     p3 = podium[podium["positionOrder"] == 3][["raceId", "constructorId"]].rename(columns={"constructorId": "p3"})
-    race_agg = df.groupby("raceId").agg(mean_grid=("grid", "mean")).reset_index()
+    race_agg = df.groupby("raceId").agg(
+        mean_grid=("grid", "mean"),
+        num_finishers=("positionOrder", lambda x: (x <= 20).sum()),
+    ).reset_index()
     merged = races.merge(p1, on="raceId").merge(p2, on="raceId").merge(p3, on="raceId").merge(race_agg, on="raceId")
     merged["round"] = pd.to_numeric(merged["round"], errors="coerce").fillna(0)
-    X = merged[["year", "round", "circuitId", "mean_grid"]].copy()
+    X = merged[["year", "round", "circuitId", "mean_grid", "num_finishers"]].copy()
     X, enc = _encode_categorical(X, ["circuitId"])
     y_list = [merged["p1"].astype(str), merged["p2"].astype(str), merged["p3"].astype(str)]
     return X, y_list, enc

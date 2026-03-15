@@ -38,9 +38,9 @@ jobs:
 
       - name: Run prediction scripts
         run: |
-          python ml/scrape_news.py
-          python ml/fastf1_race_winner.py
-          python ml/update_standings.py
+          python -m ml.scrape_news
+          python -m ml.train
+          python -m ml.export_predictions
 
       - name: Commit and push if changed
         run: |

@@ -20,5 +20,5 @@ ERGAST_ZIP_PATH = RAW_DIR / "f1db_csv.zip"
 
 # Training config
 MIN_SEASON = 2014   # Modern hybrid era
-MAX_SEASON = 2024   # Latest in Ergast
+MAX_SEASON = 2026   # Including the latest 2026 telemetry and results
 TARGET_SEASON = 2026
