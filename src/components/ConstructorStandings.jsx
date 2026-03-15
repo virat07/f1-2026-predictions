@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
-import { getTeamImage } from '../utils/assetMapper'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { getDriverImage, getTeamCarImage, getTeamImage } from '../utils/assetMapper'
 import './ConstructorStandings.css'
 
 function ConstructorStandings() {
   const sectionRef = useRef(null)
   const [constructors, setConstructors] = useState([])
+  const [racePredictions, setRacePredictions] = useState([])
+  const [selectedTeam, setSelectedTeam] = useState(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,13 +28,67 @@ function ConstructorStandings() {
       .then((res) => res.json())
       .then((data) => {
         setConstructors(data.constructorStandings || [])
+        setRacePredictions(data.racePredictions || [])
       })
       .catch((err) => {
         console.error('Failed to load constructor standings predictions', err)
       })
   }, [])
 
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setSelectedTeam(null)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [])
+
   const maxPoints = constructors.length ? constructors[0].points : 1
+  const normalizeTeamName = (name) => {
+    if (!name) return ''
+    const normalized = name.toLowerCase().trim()
+    const mapper = {
+      'red bull racing red bull ford': 'red bull racing',
+      'oracle red bull racing': 'red bull racing',
+      'racing bulls red bull ford': 'racing bulls',
+      'mclaren mercedes': 'mclaren',
+      'aston martin honda': 'aston martin',
+      'aston martin aramco': 'aston martin',
+      'alpine mercedes': 'alpine',
+      'haas ferrari': 'haas',
+      'williams mercedes': 'williams',
+      'cadillac ferrari': 'cadillac'
+    }
+    return mapper[normalized] || normalized
+  }
+
+  const teamDrivers = {
+    ferrari: ['Lewis Hamilton', 'Charles Leclerc'],
+    'red bull racing': ['Max Verstappen', 'Isack Hadjar'],
+    'racing bulls': ['Liam Lawson', 'Arvid Lindblad'],
+    mercedes: ['George Russell', 'Kimi Antonelli'],
+    mclaren: ['Lando Norris', 'Oscar Piastri'],
+    'aston martin': ['Fernando Alonso', 'Lance Stroll'],
+    alpine: ['Pierre Gasly', 'Franco Colapinto'],
+    haas: ['Esteban Ocon', 'Oliver Bearman'],
+    williams: ['Alexander Albon', 'Carlos Sainz'],
+    audi: ['Nico Hulkenberg', 'Gabriel Bortoleto'],
+    cadillac: ['Valtteri Bottas', 'Sergio Perez']
+  }
+
+  const winsByTeam = useMemo(() => {
+    return racePredictions.reduce((acc, race) => {
+      const teamKey = normalizeTeamName(race.predictedWinner)
+      if (!teamKey) return acc
+      acc[teamKey] = (acc[teamKey] || 0) + 1
+      return acc
+    }, {})
+  }, [racePredictions])
+
+  const selectedTeamKey = normalizeTeamName(selectedTeam?.name)
+  const selectedTeamDrivers = selectedTeamKey ? (teamDrivers[selectedTeamKey] || []) : []
+  const selectedTeamWins = selectedTeamKey ? (winsByTeam[selectedTeamKey] || 0) : 0
+  const selectedTeamCar = selectedTeamKey ? getTeamCarImage(selectedTeamKey) : ''
 
   return (
     <section id="constructors" className="section section-alt" ref={sectionRef}>
@@ -46,8 +102,14 @@ function ConstructorStandings() {
           {constructors.map((team, i) => (
             <div
               key={team.rank}
-              className="constructor-card"
+              className={`constructor-card ${selectedTeam?.name === team.name ? 'is-selected' : ''}`}
               style={{ transitionDelay: `${i * 80}ms` }}
+              onClick={() => setSelectedTeam(team)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') setSelectedTeam(team)
+              }}
             >
               <div className="constructor-rank">{team.rank}</div>
               <div className="constructor-color" style={{ background: team.color }}></div>
@@ -58,8 +120,21 @@ function ConstructorStandings() {
                 onError={(e) => { e.target.style.display = 'none'; }} 
               />
               <div className="constructor-info">
-                <h3>{team.name}</h3>
-                <p className="constructor-drivers">{team.drivers}</p>
+                <h3>
+                  <button
+                    type="button"
+                    className="team-name-button"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSelectedTeam(team)
+                    }}
+                  >
+                    {team.name}
+                  </button>
+                </h3>
+                <p className="constructor-drivers">
+                  {(teamDrivers[normalizeTeamName(team.name)] || []).join(' · ') || 'Drivers TBD'}
+                </p>
                 <p className="constructor-points">{team.points} PTS</p>
                 <p className="constructor-note">{team.note}</p>
               </div>
@@ -74,6 +149,60 @@ function ConstructorStandings() {
           ))}
         </div>
       </div>
+      {selectedTeam && (
+        <div
+          className="constructor-modal-backdrop"
+          role="presentation"
+          onClick={() => setSelectedTeam(null)}
+        >
+          <div
+            className="constructor-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${selectedTeam.name} details`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="constructor-modal-close"
+              type="button"
+              onClick={() => setSelectedTeam(null)}
+            >
+              ×
+            </button>
+            <div className="constructor-detail-header">
+              <p className="constructor-detail-label">Selected Team</p>
+              <h3 className="constructor-detail-title">{selectedTeam.name}</h3>
+              <p className="constructor-detail-wins">
+                {selectedTeamWins} predicted wins in 2026
+              </p>
+            </div>
+            <div className="constructor-detail-car-wrap">
+              <img
+                className="constructor-detail-car"
+                src={selectedTeamCar}
+                alt={`${selectedTeam.name} 2026 car`}
+                onError={(e) => { e.target.style.display = 'none' }}
+              />
+            </div>
+            <div className="constructor-detail-drivers">
+              {selectedTeamDrivers.map((driver) => (
+                <div key={driver} className="constructor-driver">
+                  <img
+                    className="constructor-driver-img"
+                    src={getDriverImage(driver)}
+                    alt={driver}
+                    onError={(e) => { e.target.style.display = 'none' }}
+                  />
+                  <span>{driver}</span>
+                </div>
+              ))}
+              {selectedTeamDrivers.length === 0 && (
+                <div className="constructor-driver empty">Drivers TBD</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

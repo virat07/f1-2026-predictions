@@ -175,3 +175,26 @@ export const getCircuitImage = (circuitName) => {
   const fileName = mapper[normalized] || normalized.replace(/[^a-z0-9]/g, '_');
   return `/assets/circuits/${fileName}.png`;
 };
+
+export const getTeamCarImage = (name) => {
+  if (!name) return '';
+  const normalized = name.toLowerCase().trim();
+
+  const mapper = {
+    'ferrari': 'Ferrari_SF-26.png',
+    'red bull racing': 'Red_Bull_RB22.png',
+    'racing bulls': 'Racing_Bulls_VCARB03.png',
+    'mercedes': 'Mercedes-AMG_W17.png',
+    'mclaren': 'McLaren_MCL40.png',
+    'aston martin': 'Aston_Martin_AMR26.png',
+    'alpine': 'Alpine_A526.png',
+    'haas': 'Haas_VF-26.png',
+    'williams': 'Williams_FW48.png',
+    'audi': 'Audi_R26.png',
+    'cadillac': 'Cadillac_MAC-26.png'
+  };
+
+  const fileName = mapper[normalized];
+  if (!fileName) return '';
+  return `/assets/race_cars/${fileName}`;
+};
