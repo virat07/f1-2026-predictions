@@ -9,6 +9,7 @@ function RaceCalendar({ notify }) {
   const [races, setRaces] = useState([])
   const [actualResults, setActualResults] = useState({})
   const [nextRaceIndex, setNextRaceIndex] = useState(0)
+  const [selectedCircuit, setSelectedCircuit] = useState(null)
   const [userPredictions, setUserPredictions] = useState(() => {
     const saved = localStorage.getItem('f1_user_predictions_v2')
     return saved ? JSON.parse(saved) : {}
@@ -19,7 +20,7 @@ function RaceCalendar({ notify }) {
     const roundPreds = userPredictions[round] || {}
     const newRoundPreds = { ...roundPreds, [type]: driverName }
     const newPredictions = { ...userPredictions, [round]: newRoundPreds }
-    
+
     setUserPredictions(newPredictions)
     localStorage.setItem('f1_user_predictions_v2', JSON.stringify(newPredictions))
 
@@ -41,15 +42,15 @@ function RaceCalendar({ notify }) {
       // 2. Add/Update prediction
       const { error: predError } = await supabase
         .from('predictions')
-        .upsert({ 
-          username, 
-          round, 
-          predictions, 
-          created_at: new Date().toISOString() 
+        .upsert({
+          username,
+          round,
+          predictions,
+          created_at: new Date().toISOString()
         }, { onConflict: 'username,round' });
 
       if (predError) throw predError;
-      
+
       notify('Prediction saved successfully!', 'success');
     } catch (error) {
       console.error('Supabase Sync Detailed Error:', error);
@@ -94,10 +95,10 @@ function RaceCalendar({ notify }) {
     // 2. Real-time subscription
     const channel = supabase
       .channel('results_realtime')
-      .on('postgres_changes', { 
-        event: '*', 
-        schema: 'public', 
-        table: 'actual_results' 
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'actual_results'
       }, (payload) => {
         setActualResults(prev => ({
           ...prev,
@@ -129,7 +130,7 @@ function RaceCalendar({ notify }) {
             const parts = staticRace.date.split(/[–-]/);
             let endDay = parts.length > 1 ? parts[1].trim() : parts[0];
             // Extract only the numeric day
-            endDay = endDay.replace(/[^0-9]/g, ''); 
+            endDay = endDay.replace(/[^0-9]/g, '');
             const monthStr = staticRace.date.split(' ')[0];
 
             const raceDate = new Date(`${monthStr} ${endDay}, 2026 23:59:59`);
@@ -165,12 +166,12 @@ function RaceCalendar({ notify }) {
           <span className="section-tag">SEASON SCHEDULE</span>
           <h2 className="section-title">2026 Race <span className="accent">Calendar</span></h2>
           <p className="section-subtitle">24 races across 5 continents — the biggest F1 calendar ever</p>
-          
+
           <div className="user-profile-bar fade-in">
             <label>ENTER USERNAME TO COMPETE:</label>
-            <input 
-              type="text" 
-              placeholder="F1Fan_2026" 
+            <input
+              type="text"
+              placeholder="F1Fan_2026"
               value={username}
               onChange={(e) => handleUsernameChange(e.target.value)}
             />
@@ -187,19 +188,28 @@ function RaceCalendar({ notify }) {
               <div className="race-card-header">
                 <div className="race-round">ROUND {String(race.round).padStart(2, '0')}</div>
                 <div className="race-status-badges">
+                  {actualResults[race.round] && <span className="completed-badge">COMPLETED</span>}
                   {i === nextRaceIndex && <span className="next-race-badge">NEXT RACE</span>}
                   {race.isSprint && <span className="sprint-badge">SPRINT</span>}
                 </div>
               </div>
               <span className="race-flag">{race.flag}</span>
-              <h3 className="race-name">{race.name}</h3>
-              <p className="race-circuit">{race.circuit}</p>
+              <h3 className="race-name" onClick={() => setSelectedCircuit({
+                ...race,
+                image: getCircuitImage(race.circuit),
+                results: actualResults[race.round]
+              })} style={{ cursor: 'pointer' }}>{race.name}</h3>
+              <p className="race-circuit" onClick={() => setSelectedCircuit({
+                ...race,
+                image: getCircuitImage(race.circuit),
+                results: actualResults[race.round]
+              })} style={{ cursor: 'pointer' }}>{race.circuit}</p>
               {race.date && <p className="race-date">📅 {race.date}</p>}
               <div className="race-prediction">
                 <span className="ai-label">AI PICK</span>
                 {race.prediction}
               </div>
-              
+
               {actualResults[race.round] && (
                 <div className="actual-result-highlighter">
                   <span className="result-label">🏁 FINAL RESULT</span>
@@ -210,15 +220,15 @@ function RaceCalendar({ notify }) {
                   </div>
                 </div>
               )}
-              
+
               {i === nextRaceIndex && (
                 <div className="user-prediction-box">
                   <span className="user-label">WEEKEND FORECAST</span>
-                  
+
                   <div className="prediction-row">
                     <label>QUALY</label>
-                    <select 
-                      value={userPredictions[race.round]?.qualy || ''} 
+                    <select
+                      value={userPredictions[race.round]?.qualy || ''}
                       onChange={(e) => handleUserPredict(race.round, 'qualy', e.target.value)}
                     >
                       <option value="">Pole Position...</option>
@@ -229,8 +239,8 @@ function RaceCalendar({ notify }) {
                   {race.isSprint && (
                     <div className="prediction-row">
                       <label>S_RACE</label>
-                      <select 
-                        value={userPredictions[race.round]?.sprint || ''} 
+                      <select
+                        value={userPredictions[race.round]?.sprint || ''}
                         onChange={(e) => handleUserPredict(race.round, 'sprint', e.target.value)}
                       >
                         <option value="">Sprint Winner...</option>
@@ -241,8 +251,8 @@ function RaceCalendar({ notify }) {
 
                   <div className="prediction-row">
                     <label>G_PRIX</label>
-                    <select 
-                      value={userPredictions[race.round]?.race || ''} 
+                    <select
+                      value={userPredictions[race.round]?.race || ''}
                       onChange={(e) => handleUserPredict(race.round, 'race', e.target.value)}
                     >
                       <option value="">Race Winner...</option>
@@ -252,8 +262,8 @@ function RaceCalendar({ notify }) {
 
                   <div className="prediction-row">
                     <label>TEAM</label>
-                    <select 
-                      value={userPredictions[race.round]?.team || ''} 
+                    <select
+                      value={userPredictions[race.round]?.team || ''}
                       onChange={(e) => handleUserPredict(race.round, 'team', e.target.value)}
                     >
                       <option value="">Winning Team...</option>
@@ -268,16 +278,73 @@ function RaceCalendar({ notify }) {
                   )}
                 </div>
               )}
-              <img 
-                className="circuit-map" 
-                src={getCircuitImage(race.circuit)} 
-                alt={`${race.circuit} map`} 
-                onError={(e) => { e.target.style.display = 'none'; }} 
+              <img
+                className="circuit-map"
+                src={getCircuitImage(race.circuit)}
+                alt={`${race.circuit} map`}
+                onError={(e) => { e.target.style.display = 'none'; }}
               />
             </div>
           ))}
         </div>
       </div>
+
+      {selectedCircuit && (
+        <div className="circuit-modal" onClick={() => setSelectedCircuit(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="close-modal" onClick={() => setSelectedCircuit(null)}>×</button>
+            <div className="modal-header">
+              <div className="modal-header-top">
+                <span className="modal-round">ROUND {String(selectedCircuit.round).padStart(2, '0')}</span>
+                {selectedCircuit.results && <span className="completed-badge">COMPLETED</span>}
+              </div>
+              <div className="modal-title-row">
+                <span className="modal-flag">{selectedCircuit.flag}</span>
+                <h2 className="modal-title">{selectedCircuit.name}</h2>
+              </div>
+              <p className="modal-circuit">{selectedCircuit.circuit}</p>
+            </div>
+            <div className="modal-image-container">
+              <img src={selectedCircuit.image} alt={selectedCircuit.circuit} />
+            </div>
+            <div className="modal-footer">
+              <div className="modal-footer-stats">
+                <p>📅 {selectedCircuit.date}</p>
+                <div className="modal-prediction">
+                  <span className="ai-label">AI PICK</span>
+                  {selectedCircuit.prediction}
+                </div>
+              </div>
+
+              {selectedCircuit.results && (
+                <div className="modal-actual-results">
+                  <span className="result-label">🏁 FINAL PODIUM</span>
+                  <div className="modal-result-grid">
+                    {selectedCircuit.results.race_winner && (
+                      <div className="modal-result-item">
+                        <label>WINNER</label>
+                        <span>{selectedCircuit.results.race_winner}</span>
+                      </div>
+                    )}
+                    {selectedCircuit.results.qualy_winner && (
+                      <div className="modal-result-item">
+                        <label>POLE</label>
+                        <span>{selectedCircuit.results.qualy_winner}</span>
+                      </div>
+                    )}
+                    {selectedCircuit.results.team_winner && (
+                      <div className="modal-result-item">
+                        <label>TEAM</label>
+                        <span>{selectedCircuit.results.team_winner}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

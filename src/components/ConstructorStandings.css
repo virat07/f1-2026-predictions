@@ -71,13 +71,17 @@
 
 @media (max-width: 768px) {
   .constructor-card {
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
+    flex-direction: row;
+    padding: 16px;
+    gap: 16px;
+    text-align: left;
   }
-  .constructor-rank { min-width: auto; }
-  .constructor-color { width: 60px; height: 4px; }
-  .team-car-img { width: 150px; }
+  .constructor-rank { font-size: 1.2rem; min-width: 32px; }
+  .constructor-color { height: 40px; }
+  .team-car-img { width: 80px; margin-right: 0; }
+  .constructor-note { display: none; }
+  .constructor-drivers { font-size: 0.75rem; }
+  .constructor-info h3 { font-size: 1rem; }
 }
 
 .team-car-img {

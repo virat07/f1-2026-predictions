@@ -209,9 +209,14 @@
 }
 
 @media (max-width: 768px) {
-  .standings-row { flex-wrap: wrap; }
-  .standing-team { margin-left: 0; width: 100%; margin-top: 4px; }
-  .driver-info { flex-wrap: wrap; }
+  .standings-row { 
+    padding: 12px;
+    gap: 12px;
+  }
+  .standing-team { display: none; } /* Hide team name on mobile for space */
+  .standing-points { min-width: 60px; font-size: 0.75rem; }
+  .standing-name { font-size: 0.85rem; }
+  .standing-number { min-width: 24px; font-size: 0.85rem; }
 }
 
 .driver-photo-layer {

@@ -46,52 +46,79 @@ function Leaderboard() {
 
         <div className="leaderboard-container">
           {loading ? (
-            <div className="loading">Loading standings...</div>
+            <div className="loading">
+              <div className="spinner"></div>
+              <p>Syncing Paddock Data...</p>
+            </div>
           ) : (
-            <>
-              <div className="user-stats-grid">
-                {data.users.sort((a,b) => b.score - a.score).map((user, idx) => (
-                  <div key={user.username} className="user-rank-card">
-                    <div className="rank-number">#{idx + 1}</div>
-                    <div className="user-info">
-                      <div className="username">{user.username}</div>
-                      <div className="user-joined">Since {new Date(user.joined_at).toLocaleDateString()}</div>
+            <div className="leaderboard-layout">
+              {/* Podium for Top 3 */}
+              <div className="leaderboard-podium">
+                {data.users.slice(0, 3).map((user, idx) => (
+                  <div key={user.username} className={`podium-item pos-${idx + 1}`}>
+                    <div className="podium-rank">
+                      {idx === 0 ? '🏆' : idx === 1 ? '🥈' : '🥉'}
                     </div>
-                    <div className="user-score">{user.score} <span>pts</span></div>
+                    <div className="user-avatar-large">
+                      {user.username.substring(0, 2).toUpperCase()}
+                    </div>
+                    <div className="podium-info">
+                      <div className="podium-username">@{user.username}</div>
+                      <div className="podium-score">{user.score} <span>PTS</span></div>
+                    </div>
                   </div>
                 ))}
               </div>
 
-              <div className="predictions-table-container">
-                <h3>Recent Predictions</h3>
-                <div className="table-responsive">
-                  <table className="predictions-table">
-                    <thead>
-                      <tr>
-                        <th>User</th>
-                        <th>Round</th>
-                        <th>Qualy (Pole)</th>
-                        <th>Sprint Winner</th>
-                        <th>Grand Prix</th>
-                        <th>Winner (Team)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.predictions.map((pred, i) => (
-                        <tr key={i}>
-                          <td className="user-cell">@{pred.username}</td>
-                          <td>R{pred.round}</td>
-                          <td className="driver-cell">{pred.predictions?.qualy || '--'}</td>
-                          <td className="driver-cell">{pred.predictions?.sprint || '--'}</td>
-                          <td className="driver-cell highlight">{pred.predictions?.race || '--'}</td>
-                          <td className="driver-cell">{pred.predictions?.team || '--'}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+              <div className="leaderboard-main-content">
+                <div className="standings-column">
+                  <h3>Championship Standings</h3>
+                  <div className="standings-list">
+                    {data.users.slice(3).map((user, idx) => (
+                      <div key={user.username} className="user-standing-row">
+                        <div className="row-rank">#{idx + 4}</div>
+                        <div className="user-avatar-small">
+                          {user.username.substring(0, 1).toUpperCase()}
+                        </div>
+                        <div className="row-username">{user.username}</div>
+                        <div className="row-score">{user.score} <span className="pts-label">PTS</span></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="recent-activity-column">
+                  <h3>Recent Paddock Activity</h3>
+                  <div className="activity-list">
+                    {data.predictions.map((pred, i) => (
+                      <div key={i} className="activity-card">
+                        <div className="activity-header">
+                          <span className="activity-user">@{pred.username}</span>
+                          <span className="activity-round">ROUND {pred.round}</span>
+                        </div>
+                        <div className="activity-grid">
+                          <div className="activity-item">
+                            <label>POLE</label>
+                            <span>{pred.predictions?.qualy || '--'}</span>
+                          </div>
+                          <div className="activity-item highlight">
+                            <label>WINNER</label>
+                            <span>{pred.predictions?.race || '--'}</span>
+                          </div>
+                          <div className="activity-item">
+                            <label>TEAM</label>
+                            <span>{pred.predictions?.team || '--'}</span>
+                          </div>
+                        </div>
+                        <div className="activity-time">
+                          {new Date(pred.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>
