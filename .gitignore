@@ -12,3 +12,4 @@ __pycache__/
 ml/models/
 # or
 ml/
+!ml/models/*.joblib

@@ -79,7 +79,10 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add public/ml-predictions.json
-          [ -d ml/models ] && git add ml/models/*.joblib || true
+          git add -f ml/models/race_winner.joblib
+          git add -f ml/models/podium.joblib
+          git add -f ml/models/driver_standings.joblib
+          git add -f ml/models/constructor_standings.joblib
           git diff --cached --quiet || (
             git pull --rebase origin ${{ github.ref_name }} &&
             git commit -m "chore: update ML predictions [skip ci]" &&
