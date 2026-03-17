@@ -4,12 +4,7 @@ dist/
 .env
 .venv/
 __pycache__/
-*.joblib
 .fastf1-cache/
 /ml/output/*.json
 *.joblib
-# or
-ml/models/
-# or
-ml/
 !ml/models/*.joblib
