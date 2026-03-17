@@ -71,10 +71,19 @@ jobs:
         if: steps.model-cache.outputs.cache-hit != 'true' || github.event.inputs.force_retrain == 'true'
         run: python -m ml.train
 
+      - name: Debug model files
+        run: |
+          echo "=== ml/models contents ==="
+          ls -la ml/models/ || echo "ml/models/ does not exist"
+          echo "=== all joblib files ==="
+          find ml/ -name "*.joblib" 2>/dev/null || echo "no joblib files found anywhere"
+          echo "=== cache hit ==="
+          echo "cache-hit: ${{ steps.model-cache.outputs.cache-hit }}"
+
       - name: Export predictions to JSON
         run: python -m ml.export_predictions
 
-      - name: Commit updated predictions
+      - name: Commit and push if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
