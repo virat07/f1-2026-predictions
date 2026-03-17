@@ -11,6 +11,9 @@ on:
         required: false
         default: 'false'
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: write
 
@@ -19,8 +22,8 @@ jobs:
     name: Sync Race Results
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
         with:
           python-version: '3.11'
       - run: pip install supabase
@@ -36,14 +39,14 @@ jobs:
     needs: sync_results
     if: always()
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
         with:
           python-version: '3.11'
           cache: 'pip'
 
       - name: Cache FastF1 data
-        uses: actions/cache@v4
+        uses: actions/cache@v4.2.0
         with:
           path: ml/processed/fastf1_cache
           key: fastf1-${{ runner.os }}-${{ hashFiles('ml/config.py') }}-${{ github.run_id }}
@@ -53,7 +56,7 @@ jobs:
 
       - name: Cache trained models
         id: model-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v4.2.0
         with:
           path: ml/models
           key: models-${{ runner.os }}-${{ hashFiles('ml/config.py', 'ml/features/features.py', 'ml/train.py') }}-${{ github.run_number }}
@@ -71,15 +74,6 @@ jobs:
         if: steps.model-cache.outputs.cache-hit != 'true' || github.event.inputs.force_retrain == 'true'
         run: python -m ml.train
 
-      - name: Debug model files
-        run: |
-          echo "=== ml/models contents ==="
-          ls -la ml/models/ || echo "ml/models/ does not exist"
-          echo "=== all joblib files ==="
-          find ml/ -name "*.joblib" 2>/dev/null || echo "no joblib files found anywhere"
-          echo "=== cache hit ==="
-          echo "cache-hit: ${{ steps.model-cache.outputs.cache-hit }}"
-
       - name: Export predictions to JSON
         run: python -m ml.export_predictions
 
@@ -93,7 +87,7 @@ jobs:
           git add -f ml/models/driver_standings.joblib
           git add -f ml/models/constructor_standings.joblib
           git diff --cached --quiet || (
-            git pull --rebase origin ${{ github.ref_name }} &&
             git commit -m "chore: update ML predictions [skip ci]" &&
+            git pull --rebase origin ${{ github.ref_name }} &&
             git push
           )
