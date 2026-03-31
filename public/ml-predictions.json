@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-31T04:13:16.348686+00:00",
+  "generated_at": "2026-03-31T04:18:15.777696+00:00",
   "season": 2026,
   "source": "ml_models_fastf1",
   "total_rounds": 24,
@@ -692,7 +692,7 @@
       ],
       "predicted_podium": {
         "P1": "Red Bull Racing",
-        "P2": "Aston Martin",
+        "P2": "Alpine",
         "P3": "Racing Bulls"
       }
     },
@@ -910,23 +910,23 @@
         "rank": 6
       },
       {
+        "constructor": "Aston Martin",
+        "predicted_points": 100.5,
+        "rank": 7
+      },
+      {
         "constructor": "Williams",
         "predicted_points": 75.2,
-        "rank": 7
+        "rank": 8
       },
       {
         "constructor": "Alpine",
         "predicted_points": 8.4,
-        "rank": 8
+        "rank": 9
       },
       {
         "constructor": "Cadillac",
         "predicted_points": 4.3,
-        "rank": 9
-      },
-      {
-        "constructor": "Aston Martin",
-        "predicted_points": 1.9,
         "rank": 10
       },
       {
@@ -943,7 +943,7 @@
         "constructor": "Mercedes",
         "predicted_points": 332.9,
         "position": 1,
-        "championship_pct": 25.2
+        "championship_pct": 24.9
       },
       {
         "driver": "HAM",
@@ -952,7 +952,7 @@
         "constructor": "Ferrari",
         "predicted_points": 299.5,
         "position": 2,
-        "championship_pct": 20.4
+        "championship_pct": 20.1
       },
       {
         "driver": "LEC",
@@ -961,7 +961,7 @@
         "constructor": "Ferrari",
         "predicted_points": 276.4,
         "position": 3,
-        "championship_pct": 17.3
+        "championship_pct": 17.1
       },
       {
         "driver": "ANT",
@@ -970,7 +970,7 @@
         "constructor": "Mercedes",
         "predicted_points": 241.0,
         "position": 4,
-        "championship_pct": 13.2
+        "championship_pct": 13.0
       },
       {
         "driver": "VER",
@@ -997,7 +997,7 @@
         "constructor": "McLaren",
         "predicted_points": 134.0,
         "position": 7,
-        "championship_pct": 4.1
+        "championship_pct": 4.0
       },
       {
         "driver": "HAD",
@@ -1036,12 +1036,30 @@
         "championship_pct": 0.6
       },
       {
+        "driver": "STR",
+        "name": "Lance Stroll",
+        "number": 18,
+        "constructor": "Aston Martin",
+        "predicted_points": 50.2,
+        "position": 12,
+        "championship_pct": 0.6
+      },
+      {
+        "driver": "ALO",
+        "name": "Fernando Alonso",
+        "number": 14,
+        "constructor": "Aston Martin",
+        "predicted_points": 50.2,
+        "position": 13,
+        "championship_pct": 0.6
+      },
+      {
         "driver": "LIN",
         "name": "Arvid Lindblad",
         "number": 41,
         "constructor": "Racing Bulls",
         "predicted_points": 50.0,
-        "position": 12,
+        "position": 14,
         "championship_pct": 0.6
       },
       {
@@ -1050,7 +1068,7 @@
         "number": 23,
         "constructor": "Williams",
         "predicted_points": 39.1,
-        "position": 13,
+        "position": 15,
         "championship_pct": 0.3
       },
       {
@@ -1059,7 +1077,7 @@
         "number": 55,
         "constructor": "Williams",
         "predicted_points": 36.1,
-        "position": 14,
+        "position": 16,
         "championship_pct": 0.3
       },
       {
@@ -1068,7 +1086,7 @@
         "number": 10,
         "constructor": "Alpine",
         "predicted_points": 4.4,
-        "position": 15,
+        "position": 17,
         "championship_pct": 0.0
       },
       {
@@ -1077,7 +1095,7 @@
         "number": 43,
         "constructor": "Alpine",
         "predicted_points": 4.0,
-        "position": 16,
+        "position": 18,
         "championship_pct": 0.0
       },
       {
@@ -1086,7 +1104,7 @@
         "number": 11,
         "constructor": "Cadillac",
         "predicted_points": 2.4,
-        "position": 17,
+        "position": 19,
         "championship_pct": 0.0
       },
       {
@@ -1095,24 +1113,6 @@
         "number": 77,
         "constructor": "Cadillac",
         "predicted_points": 1.9,
-        "position": 18,
-        "championship_pct": 0.0
-      },
-      {
-        "driver": "STR",
-        "name": "Lance Stroll",
-        "number": 18,
-        "constructor": "Aston Martin",
-        "predicted_points": 0.9,
-        "position": 19,
-        "championship_pct": 0.0
-      },
-      {
-        "driver": "ALO",
-        "name": "Fernando Alonso",
-        "number": 14,
-        "constructor": "Aston Martin",
-        "predicted_points": 0.9,
         "position": 20,
         "championship_pct": 0.0
       },
