@@ -9,3 +9,5 @@ __pycache__/
 *.joblib
 !ml/models/*.joblib
 /ml/processed/
+playwright-report/
+test-results/
