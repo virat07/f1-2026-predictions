@@ -7,4 +7,5 @@ __pycache__/
 .fastf1-cache/
 /ml/output/*.json
 *.joblib
-!ml/models/*.joblib/ml/processed/
+!ml/models/*.joblib
+/ml/processed/
