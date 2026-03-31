@@ -7,6 +7,7 @@ Used as optional features in export_predictions.py.
 Run standalone: python -m ml.scrape_news
 """
 import json
+import ssl
 import sys
 import urllib.request
 import urllib.parse
@@ -36,7 +37,8 @@ def _fetch_headlines(query: str, max_results: int = 10) -> list[str]:
     url = f"https://news.google.com/rss/search?q={encoded}+F1+Formula1&hl=en-US&gl=US&ceid=US:en"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as resp:
+        ctx = ssl._create_unverified_context()
+        with urllib.request.urlopen(req, timeout=10, context=ctx) as resp:
             content = resp.read().decode("utf-8", errors="ignore")
         # Extract <title> tags (skip first — it's the feed title)
         titles = []

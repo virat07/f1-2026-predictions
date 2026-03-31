@@ -32,6 +32,24 @@ CONSTRUCTORS_2026 = [
     "Cadillac",          # MAC-26 – Ferrari PU (NEW team, F1 debut)
 ]
 
+# ── 2026 Regulation Impact Multipliers ───────────────────────────────────────
+# These represent the estimated impact (+/- gain/loss) of the new 2026 
+# active-aero and power unit regulations on each constructor. 
+# Used in feature engineering to disrupt historical performance bias.
+REG_IMPACT_2026 = {
+    "Mercedes":         +0.35, # Strong new Power Unit development
+    "Ferrari":          +0.25, # Consistent PU + strong aero-packaging 
+    "McLaren":          +0.15, # Momentum from previous seasons, stable PU
+    "Aston Martin":     +0.10, # Adrian Newey influence begins (partial)
+    "Williams":         +0.05, # Mercedes PU benefit
+    "Alpine":           +0.00, # Transition to Mercedes PU
+    "Haas":             -0.05, # Smaller team budget constraints
+    "Audi":             -0.10, # New PU supplier teething issues
+    "Cadillac":         -0.15, # New entry learning curve
+    "Racing Bulls":     -0.20, # Red Bull Ford PU uncertainty
+    "Red Bull Racing":  -0.25, # Major disruption (Ford PU partnership)
+}
+
 # ── Official 2026 Driver lineup ───────────────────────────────────────────────
 # Numbers from FIA entry list (Norris #1 as champion, Verstappen moves to #3)
 DRIVERS_2026 = [

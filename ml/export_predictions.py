@@ -144,6 +144,8 @@ def _constructor_form(constructor: str, sentiment: dict) -> dict:
         "cum_wins":    max(0, round((tier[0] + sent * 3)  * reg_factor)),
         "cum_podiums": max(0, round((tier[1] + sent * 5)  * reg_factor)),
         "cum_points":  max(0, round((tier[2] + sent * 80) * reg_factor)),
+        "reg_impact":  reg_factor - 1.0, # map multiplier back to impact score
+        "sentiment":   sent,
     }
 
 
@@ -162,8 +164,12 @@ def predict_race_winner(bundle: dict, race: dict, sentiment: dict) -> list:
             "event_enc":       event_enc,
             "constructor_enc": _safe_encode(constructor, enc.get("constructor", {})),
             "best_grid":       5,
-            **form,
+            "cum_wins":        form["cum_wins"],
+            "cum_podiums":     form["cum_podiums"],
+            "cum_points":      form["cum_points"],
             "avg_grid_pos":    4.0,
+            "reg_impact":      form["reg_impact"],
+            "sentiment":       form["sentiment"],
         }])
         proba = model.predict_proba(row)[0]
         try:
@@ -197,8 +203,12 @@ def predict_podium(bundle: dict, race: dict, sentiment: dict) -> dict:
                 "event_enc":       event_enc,
                 "constructor_enc": _safe_encode(constructor, enc.get("constructor", {})),
                 "best_grid":       i + 1,
-                **form,
+                "cum_wins":        form["cum_wins"],
+                "cum_podiums":     form["cum_podiums"],
+                "cum_points":      form["cum_points"],
                 "avg_grid_pos":    float(i + 2),
+                "reg_impact":      form["reg_impact"],
+                "sentiment":       form["sentiment"],
             }])
             try:
                 proba = model.predict_proba(row)[0].max()
@@ -245,6 +255,8 @@ def predict_season_standings(c_bundle: dict, d_bundle: dict, sentiment: dict) ->
             "season_wins":     form["cum_wins"],
             "season_podiums":  form["cum_podiums"],
             "prev_points":     form["cum_points"],
+            "reg_impact":      form["reg_impact"],
+            "sentiment":       form["sentiment"],
         }])
         pred_pts = round(max(0, float(c_model.predict(row)[0])), 1)
         constructor_pts_map[constructor] = pred_pts
