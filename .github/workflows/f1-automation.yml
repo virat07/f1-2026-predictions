@@ -92,10 +92,23 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Add the specific files we care about
           git add public/ml-predictions.json
           git add -f ml/models/*.joblib
-          git diff --cached --quiet || (
-            git commit -m "chore: update ML predictions [skip ci]" &&
-            git pull --rebase origin ${{ github.ref_name }} &&
+          
+          # Only proceed if there are actual changes staged
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update ML predictions [skip ci]"
+            
+            # Discard any other unstaged changes (interim data, etc.) to allow rebase
+            git checkout .
+            
+            # Pull with rebase, preferring our local changes in case of conflicts
+            # (In rebase, 'theirs' is our local commit being replayed)
+            git pull --rebase -X theirs origin ${{ github.ref_name }}
+            
             git push
-          )
+          else
+            echo "No changes to commit"
+          fi
