@@ -50,7 +50,8 @@ function RaceCalendar({ notify }) {
     const fetchResults = async () => {
       const { data } = await supabase.from('actual_results').select('*')
       if (data) {
-        const map = data.reduce((acc, curr) => { acc[curr.round] = curr; return acc }, {})
+        // Use Number(curr.round) to ensure consistent lookups regardless of DB data type
+        const map = data.reduce((acc, curr) => { acc[Number(curr.round)] = curr; return acc }, {})
         setActualResults(map)
       }
     }
@@ -58,7 +59,7 @@ function RaceCalendar({ notify }) {
     const channel = supabase
       .channel('results_realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'actual_results' }, (payload) => {
-        setActualResults(prev => ({ ...prev, [payload.new.round]: payload.new }))
+        setActualResults(prev => ({ ...prev, [Number(payload.new.round)]: payload.new }))
       })
       .subscribe()
     return () => supabase.removeChannel(channel)

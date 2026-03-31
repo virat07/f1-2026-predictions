@@ -30,8 +30,10 @@ def main():
     args = parser.parse_args()
 
     if not args.watch:
-        # Manual one-time sync for current round
-        publish_result(1)
+        # Manual one-time sync for all pre-defined results in our mock data
+        print(f"🔄 Syncing all {len(SEASON_RESULTS)} pre-defined rounds...")
+        for r_id in SEASON_RESULTS:
+            publish_result(r_id)
         return
 
     print("🕵️ F1 RACE CONTROL: WATCH MODE ACTIVE")
