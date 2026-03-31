@@ -12,9 +12,9 @@ supabase: Client = create_client(URL, KEY)
 
 # Pre-defined results for automation (Mocking the 2026 season flow)
 SEASON_RESULTS = {
-    1: {"race_winner": "Lewis Hamilton", "qualy_winner": "Lewis Hamilton", "team_winner": "Scuderia Ferrari"},
-    2: {"race_winner": "Lando Norris", "qualy_winner": "Lando Norris", "sprint_winner": "Max Verstappen", "team_winner": "McLaren F1 Team"},
-    3: {"race_winner": "Max Verstappen", "qualy_winner": "Oscar Piastri", "team_winner": "Oracle Red Bull Racing"},
+    1: {"race_winner": "George Russell", "qualy_winner": "George Russell", "team_winner": "Mercedes-AMG Petronas"},
+    2: {"race_winner": "Kimi Antonelli", "qualy_winner": "Kimi Antonelli", "sprint_winner": "Kimi Antonelli", "team_winner": "Mercedes-AMG Petronas"},
+    3: {"race_winner": "Kimi Antonelli", "qualy_winner": "Kimi Antonelli", "team_winner": "Mercedes-AMG Petronas"},
 }
 
 def publish_result(round_id):
