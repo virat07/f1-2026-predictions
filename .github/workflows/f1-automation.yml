@@ -1,6 +1,11 @@
 name: F1 Auto-Sync & Retrain
 
 on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'public/ml-predictions.json'
+      - 'ml/models/*.joblib'
   schedule:
     # Runs every Sunday at 14:00 UTC (post-race)
     - cron: '0 14 * * 0'
