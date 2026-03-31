@@ -1,11 +1,12 @@
+import os
 import argparse
 import time
 from datetime import datetime
 from supabase import create_client, Client
 
 # Configuration
-URL = "https://eiczartjsujqyxqgaufg.supabase.co"
-KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpY3phcnRqc3VqcXl4cWdhdWZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjQ1MzgsImV4cCI6MjA4OTEwMDUzOH0.bCP4PU-MjvnX-1XiZMMbWWaOaGrFRoCtF5sWULdLZds"
+URL = os.getenv("SUPABASE_URL", "https://eiczartjsujqyxqgaufg.supabase.co")
+KEY = os.getenv("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpY3phcnRqc3VqcXl4cWdhdWZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjQ1MzgsImV4cCI6MjA4OTEwMDUzOH0.bCP4PU-MjvnX-1XiZMMbWWaOaGrFRoCtF5sWULdLZds")
 
 supabase: Client = create_client(URL, KEY)
 
