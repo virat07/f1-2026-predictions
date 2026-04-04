@@ -150,9 +150,10 @@ def _constructor_form(constructor: str, sentiment: dict) -> dict:
 
 
 def predict_race_winner(bundle: dict, race: dict, sentiment: dict) -> list:
-    model     = bundle["model"]
-    le        = bundle["label_encoder"]
-    enc       = bundle["encoder_mapping"]
+    """Pointwise win probability for each constructor."""
+    model = bundle["model"]
+    enc   = bundle["encoder_mapping"]
+    features = bundle["feature_names"]
     event_enc = _safe_encode(race["name"], enc.get("event_name", {}))
 
     rows = []
@@ -163,39 +164,49 @@ def predict_race_winner(bundle: dict, race: dict, sentiment: dict) -> list:
             "round":           race["round"],
             "event_enc":       event_enc,
             "constructor_enc": _safe_encode(constructor, enc.get("constructor", {})),
-            "best_grid":       5,
+            "best_grid":       1, 
             "cum_wins":        form["cum_wins"],
             "cum_podiums":     form["cum_podiums"],
             "cum_points":      form["cum_points"],
-            "avg_grid_pos":    4.0,
+            "avg_grid_pos":    3.0,
             "reg_impact":      form["reg_impact"],
             "sentiment":       form["sentiment"],
-        }])
-        proba = model.predict_proba(row)[0]
-        try:
-            class_idx = list(le.classes_).index(constructor)
-            win_prob  = float(proba[class_idx])
-        except ValueError:
-            win_prob  = float(proba.max()) / len(CONSTRUCTORS_2026)
-        rows.append({"constructor": constructor, "win_probability": round(win_prob, 4)})
+        }])[features]
 
-    rows.sort(key=lambda x: x["win_probability"], reverse=True)
-    total = sum(r["win_probability"] for r in rows) or 1.0
+        proba_raw = model.predict_proba(row)[0]
+        # In a binary model [0, 1], index 1 is probability of 'being a winner'
+        win_prob = float(proba_raw[1]) if len(proba_raw) > 1 else 0.05
+        rows.append({"constructor": constructor, "prob": win_prob})
+
+    # Normalize across all teams
+    total = sum(r["prob"] for r in rows) or 1.0
+    final_rows = []
     for r in rows:
-        r["win_probability"] = round(r["win_probability"] / total, 4)
-    return rows
+        final_rows.append({
+            "constructor": r["constructor"],
+            "win_probability": round(r["prob"] / total, 4)
+        })
+    
+    final_rows.sort(key=lambda x: x["win_probability"], reverse=True)
+    return final_rows
 
 
 def predict_podium(bundle: dict, race: dict, sentiment: dict) -> dict:
+    """Pointwise podium selection (P1, P2, P3). Ensure uniqueness."""
     models    = bundle["models"]
-    les       = bundle["label_encoders"]
     enc       = bundle["encoder_mapping"]
+    features  = bundle["feature_names"]
     event_enc = _safe_encode(race["name"], enc.get("event_name", {}))
 
     podium = {}
-    for i, (model, le) in enumerate(zip(models, les)):
-        best_constructor, best_prob = None, -1.0
+    used_teams = set()
+
+    for i, model in enumerate(models):
+        pos_label = f"P1" if i==0 else (f"P2" if i==1 else f"P3")
+        candidates = []
         for constructor in CONSTRUCTORS_2026:
+            if constructor in used_teams: continue
+            
             form = _constructor_form(constructor, sentiment)
             row  = pd.DataFrame([{
                 "year":            2026,
@@ -209,14 +220,19 @@ def predict_podium(bundle: dict, race: dict, sentiment: dict) -> dict:
                 "avg_grid_pos":    float(i + 2),
                 "reg_impact":      form["reg_impact"],
                 "sentiment":       form["sentiment"],
-            }])
-            try:
-                proba = model.predict_proba(row)[0].max()
-            except Exception:
-                proba = 0.0
-            if proba > best_prob:
-                best_prob, best_constructor = proba, constructor
-        podium[f"P{i+1}"] = best_constructor
+            }])[features]
+            
+            p_val = model.predict_proba(row)[0][1] # Probability of finishing in this spot
+            candidates.append((constructor, p_val))
+        
+        if candidates:
+            candidates.sort(key=lambda x: x[1], reverse=True)
+            best_team = candidates[0][0]
+            podium[f"P{i+1}"] = best_team
+            used_teams.add(best_team)
+        else:
+            podium[f"P{i+1}"] = "TBD"
+
     return podium
 
 

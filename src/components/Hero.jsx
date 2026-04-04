@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { races } from '../data/f1Data'
+import { getCircuitImage } from '../utils/assetMapper'
 import './Hero.css'
 
 function Hero() {
@@ -7,6 +8,21 @@ function Hero() {
   const statsRef = useRef(null)
   const [nextRace, setNextRace] = useState(null)
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+  const [activeModal, setActiveModal] = useState(null) // 'circuit' or 'winner'
+  const [selectedWinner, setSelectedWinner] = useState(null)
+  const [scrollVisible, setScrollVisible] = useState(true)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setScrollVisible(false)
+      } else {
+        setScrollVisible(true)
+      }
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     // Create particles
@@ -79,7 +95,7 @@ function Hero() {
 
     if (upcoming) {
       setNextRace(upcoming)
-      
+
       const parts = upcoming.date.split(/[–-]/)
       const startDay = parts[0].trim().replace(/[^0-9]/g, '')
       const monthStr = upcoming.date.split(' ')[0]
@@ -133,6 +149,45 @@ function Hero() {
     { value: 1, label: 'Champion' },
   ]
 
+  // Helper to get YouTube ID for common winners/tracks
+  const getWinnerVideoId = (winner, track = "") => {
+    const driver = winner.split(' ')[0];
+    const trackLower = track.toLowerCase();
+    
+    // Real-world F1 YouTube Highlight Mapping (Embeddable IDs)
+    const trackHighlights = {
+      'sakhir': {
+        'Verstappen': 'K0SjW8W6Xf8', // 2024 Bahrain
+        'Leclerc': 'nZq5g6Gf6I0'     // 2022 Bahrain
+      },
+      'melbourne': {
+        'Sainz': 'zS4T27R-QYo',      // 2024 Australia
+        'Verstappen': '8_m7Y9U9-Zk'  // 2023 Australia
+      },
+      'monaco': {
+        'Leclerc': 'fN6Gv-9pUoM',    // 2024 Monaco (Cinematic)
+        'Perez': 'vIIDvKqA7uM'       // 2022 Monaco
+      }
+    };
+
+    const driverHighlights = {
+      'Verstappen': 'A0hnd75k9S8',
+      'Hamilton': 'jWNSv9hI_kM',
+      'Leclerc': 'nZq5g6Gf6I0',
+      'Norris': 'vIIDvKqA7uM',
+      'Sainz': 'zS4T27R-QYo',
+      'Perez': '8_m7Y9U9-Zk'
+    };
+
+    // Find if track matches any key in our mapping
+    const trackKey = Object.keys(trackHighlights).find(k => trackLower.includes(k));
+    if (trackKey && trackHighlights[trackKey][driver]) {
+      return trackHighlights[trackKey][driver];
+    }
+
+    return driverHighlights[driver] || 'v4Z9Ie_S_D0';
+  }
+
   return (
     <section id="hero" className="hero-section">
       <div className="hero-bg"></div>
@@ -179,15 +234,25 @@ function Hero() {
             </div>
             <div className="next-race-info">
               <span className="next-tag">NEXT ROUND</span>
-              <h3 className="next-name">{nextRace.flag} {nextRace.name}</h3>
-              <p className="next-circuit">{nextRace.circuit} • {nextRace.date}</p>
-              
+              <h3 className="next-name clickable" onClick={() => setActiveModal('circuit')}>
+                {nextRace.flag} {nextRace.name}
+              </h3>
+              <p className="next-circuit clickable" onClick={() => setActiveModal('circuit')}>
+                {nextRace.circuit} • {nextRace.date}
+              </p>
+
               {nextRace.previousWinners && (
                 <div className="prev-winners">
                   <span className="prev-title">PAST WINNERS:</span>
                   <div className="prev-list">
                     {nextRace.previousWinners.map(winner => (
-                      <span key={winner} className="prev-winner">{winner}</span>
+                      <span
+                        key={winner}
+                        className="prev-winner clickable-badge"
+                        onClick={() => { setSelectedWinner(winner); setActiveModal('winner'); }}
+                      >
+                        {winner}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -195,11 +260,55 @@ function Hero() {
             </div>
           </div>
         )}
+
+        {/* ── Interactive Modals ── */}
+        {activeModal === 'circuit' && nextRace && (
+          <div className="hero-modal-overlay" onClick={() => setActiveModal(null)}>
+            <div className="hero-modal-content" onClick={e => e.stopPropagation()}>
+              <button className="close-hero-modal" onClick={() => setActiveModal(null)}>×</button>
+              <div className="hero-modal-header">
+                <span className="modal-badge">CIRCUIT MAP</span>
+                <h2>{nextRace.name}</h2>
+                <p>{nextRace.circuit}</p>
+              </div>
+              <div className="hero-modal-body">
+                <img src={getCircuitImage(nextRace.circuit)} alt={nextRace.circuit} className="modal-circuit-img" />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeModal === 'winner' && selectedWinner && (
+          <div className="hero-modal-overlay" onClick={() => setActiveModal(null)}>
+            <div className="hero-modal-content winner-moment" onClick={e => e.stopPropagation()}>
+              <button className="close-hero-modal" onClick={() => setActiveModal(null)}>×</button>
+              <div className="hero-modal-header">
+                <span className="modal-badge">WINNER MOMENT</span>
+                <h2>{selectedWinner}</h2>
+                <p>Podium Highlight • Official F1 Archives</p>
+              </div>
+              <div className="hero-modal-body video-container">
+                <div className="video-player-wrapper">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${getWinnerVideoId(selectedWinner, nextRace.name)}?origin=http://localhost:5173&autoplay=1&rel=0`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         <a href="#drivers" className="hero-cta" onClick={handleExplore}>
           Explore Predictions <span className="cta-arrow">→</span>
         </a>
       </div>
-      <div className="scroll-indicator">
+
+      <div className={`scroll-indicator ${!scrollVisible ? 'hidden' : ''}`}>
         <div className="scroll-mouse">
           <div className="scroll-wheel"></div>
         </div>

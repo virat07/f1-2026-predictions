@@ -104,8 +104,8 @@ def _race_level_features(df: pd.DataFrame) -> pd.DataFrame:
 
 def build_race_winner_dataset():
     """
-    One row per race.  Target = winning constructor name.
-    Features: year, round, encoded event, encoded constructor, rolling stats.
+    Pointwise approach: One row per (race, constructor).
+    Target = 1 if that constructor won, else 0.
     """
     raw = build_race_results()
     df  = _constructor_stats(raw)
@@ -125,34 +125,29 @@ def build_race_winner_dataset():
            .groupby(["year", "round"])
            .first()
            .reset_index()[["year", "round", "constructor"]]
-           .rename(columns={"constructor": "winner"})
+           .rename(columns={"constructor": "winner_name"})
     )
     agg = agg.merge(winners, on=["year", "round"])
-
-    # Keep one row per race (use the winner's row for simplicity)
-    race_df = (
-        agg[agg["constructor"] == agg["winner"]]
-        .drop_duplicates(["year", "round"])
-        .copy()
-    )
+    agg["is_winner"] = (agg["constructor"] == agg["winner_name"]).astype(int)
 
     enc = {}
-    race_df["event_enc"], enc["event_name"] = _encode_col(race_df["event_name"])
-    race_df["constructor_enc"], enc["constructor"] = _encode_col(race_df["constructor"])
+    agg["event_enc"], enc["event_name"]       = _encode_col(agg["event_name"])
+    agg["constructor_enc"], enc["constructor"] = _encode_col(agg["constructor"])
 
     feature_cols = [
         "year", "round", "event_enc", "constructor_enc",
         "best_grid", "cum_wins", "cum_podiums", "cum_points", "avg_grid_pos",
         "reg_impact", "sentiment"
     ]
-    X = race_df[feature_cols].reset_index(drop=True)
-    y = race_df["winner"].reset_index(drop=True)
+    X = agg[feature_cols].copy().reset_index(drop=True)
+    y = agg["is_winner"].copy().reset_index(drop=True)
     return X, y, enc
 
 
 def build_podium_dataset():
     """
-    One row per race.  Targets = [P1_constructor, P2_constructor, P3_constructor].
+    Pointwise approach: One row per (race, constructor).
+    Target y_list = [is_p1, is_p2, is_p3].
     """
     raw = build_race_results()
     df  = _constructor_stats(raw)
@@ -169,39 +164,20 @@ def build_podium_dataset():
     agg["event_enc"], enc["event_name"]       = _encode_col(agg["event_name"])
     agg["constructor_enc"], enc["constructor"] = _encode_col(agg["constructor"])
 
-    podium_list = []
-    for pos in [1, 2, 3]:
-        pos_df = (
-            agg.sort_values("best_position")
-               .groupby(["year", "round"])
-               .nth(pos - 1)          # 0-indexed
-               .reset_index()[["year", "round", "constructor"]]
-               .rename(columns={"constructor": f"P{pos}"})
-        )
-        podium_list.append(pos_df)
-
-    base = podium_list[0]
-    for p in podium_list[1:]:
-        base = base.merge(p, on=["year", "round"])
-
-    # Use winner rows for features
-    winner_feats = (
-        agg.sort_values("best_position")
-           .groupby(["year", "round"])
-           .first()
-           .reset_index()
-    )
-    merged = winner_feats.merge(base, on=["year", "round"])
+    # Map positions
+    agg["is_p1"] = (agg["best_position"] == 1).astype(int)
+    agg["is_p2"] = (agg["best_position"] == 2).astype(int)
+    agg["is_p3"] = (agg["best_position"] == 3).astype(int)
 
     feature_cols = [
         "year", "round", "event_enc", "constructor_enc",
         "best_grid", "cum_wins", "cum_podiums", "cum_points", "avg_grid_pos",
         "reg_impact", "sentiment"
     ]
-    X      = merged[feature_cols].reset_index(drop=True)
-    y_list = [merged["P1"].reset_index(drop=True),
-              merged["P2"].reset_index(drop=True),
-              merged["P3"].reset_index(drop=True)]
+    X      = agg[feature_cols].copy().reset_index(drop=True)
+    y_list = [agg["is_p1"].reset_index(drop=True),
+              agg["is_p2"].reset_index(drop=True),
+              agg["is_p3"].reset_index(drop=True)]
     return X, y_list, enc
 
 
