@@ -1,9 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { races } from '../data/f1Data'
 import './Hero.css'
 
 function Hero() {
   const particlesRef = useRef(null)
   const statsRef = useRef(null)
+  const [nextRace, setNextRace] = useState(null)
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 
   useEffect(() => {
     // Create particles
@@ -62,6 +65,46 @@ function Hero() {
     return () => observer.disconnect()
   }, [])
 
+  // Countdown Logic
+  useEffect(() => {
+    // Find next race
+    const now = new Date()
+    const upcoming = races.find(race => {
+      const parts = race.date.split(/[–-]/)
+      const endDay = parts.length > 1 ? parts[1].trim().replace(/[^0-9]/g, '') : parts[0].replace(/[^0-9]/g, '')
+      const monthStr = race.date.split(' ')[0]
+      const raceDate = new Date(`${monthStr} ${endDay}, 2026 23:59:59`)
+      return raceDate >= now
+    })
+
+    if (upcoming) {
+      setNextRace(upcoming)
+      
+      const parts = upcoming.date.split(/[–-]/)
+      const startDay = parts[0].trim().replace(/[^0-9]/g, '')
+      const monthStr = upcoming.date.split(' ')[0]
+      const targetDate = new Date(`${monthStr} ${startDay}, 2026 09:00:00`).getTime()
+
+      const timer = setInterval(() => {
+        const currentTime = new Date().getTime()
+        const difference = targetDate - currentTime
+
+        if (difference > 0) {
+          setTimeLeft({
+            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+            minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+            seconds: Math.floor((difference % (1000 * 60)) / 1000)
+          })
+        } else {
+          clearInterval(timer)
+        }
+      }, 1000)
+
+      return () => clearInterval(timer)
+    }
+  }, [])
+
   const animateCounter = (el, start, end, duration) => {
     const startTime = performance.now()
     const update = (currentTime) => {
@@ -113,6 +156,45 @@ function Hero() {
             </div>
           ))}
         </div>
+
+        {nextRace && (
+          <div className="next-race-container">
+            <div className="countdown-grid">
+              <div className="countdown-item">
+                <span className="countdown-val">{timeLeft.days}</span>
+                <span className="countdown-label">DAYS</span>
+              </div>
+              <div className="countdown-item">
+                <span className="countdown-val">{timeLeft.hours}</span>
+                <span className="countdown-label">HRS</span>
+              </div>
+              <div className="countdown-item">
+                <span className="countdown-val">{timeLeft.minutes}</span>
+                <span className="countdown-label">MIN</span>
+              </div>
+              <div className="countdown-item">
+                <span className="countdown-val">{timeLeft.seconds}</span>
+                <span className="countdown-label">SEC</span>
+              </div>
+            </div>
+            <div className="next-race-info">
+              <span className="next-tag">NEXT ROUND</span>
+              <h3 className="next-name">{nextRace.flag} {nextRace.name}</h3>
+              <p className="next-circuit">{nextRace.circuit} • {nextRace.date}</p>
+              
+              {nextRace.previousWinners && (
+                <div className="prev-winners">
+                  <span className="prev-title">PAST WINNERS:</span>
+                  <div className="prev-list">
+                    {nextRace.previousWinners.map(winner => (
+                      <span key={winner} className="prev-winner">{winner}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
         <a href="#drivers" className="hero-cta" onClick={handleExplore}>
           Explore Predictions <span className="cta-arrow">→</span>
         </a>

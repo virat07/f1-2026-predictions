@@ -173,6 +173,148 @@
 .cta-arrow { transition: var(--transition-fast); }
 .hero-cta:hover .cta-arrow { transform: translateX(4px); }
 
+/* --- Next Race Countdown --- */
+.next-race-container {
+  margin: 0 auto 60px;
+  max-width: 650px;
+  background: rgba(12, 16, 24, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.next-race-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--accent);
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  min-width: 180px;
+}
+
+.countdown-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 85px;
+}
+
+.countdown-val {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.countdown-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.next-race-info {
+  text-align: left;
+  flex: 1;
+}
+
+.next-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.next-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+.next-circuit {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.prev-winners {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 16px;
+}
+
+.prev-title {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.prev-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.prev-winner {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+@media (max-width: 768px) {
+  .hero-stats { gap: 24px; }
+  .hero-stat-value { font-size: 2rem; }
+  
+  .next-race-container {
+    flex-direction: column;
+    padding: 24px;
+    gap: 24px;
+    max-width: 400px;
+  }
+  
+  .next-race-info { text-align: center; }
+  .prev-list { justify-content: center; }
+  .countdown-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .hero-title-year { font-size: 5rem; }
+  .hero-description { font-size: 1rem; }
+  .countdown-grid { gap: 8px; }
+  .countdown-item { min-width: 70px; padding: 10px 5px; }
+  .countdown-val { font-size: 1.2rem; }
+}
+
 .scroll-indicator {
   position: absolute;
   bottom: 24px;
