@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-04T07:31:58.843344+00:00",
+  "generated_at": "2026-06-08T20:23:19.860115+00:00",
   "season": 2026,
   "source": "ml_models_fastf1",
   "total_rounds": 24,
@@ -90,7 +90,7 @@
       "circuit": "Suzuka Circuit",
       "date": "2026-04-05",
       "sprint": false,
-      "is_completed": false,
+      "is_completed": true,
       "predicted_winner": "Williams",
       "win_probabilities": [
         {
@@ -126,7 +126,7 @@
       "circuit": "Bahrain International Circuit",
       "date": "2026-04-19",
       "sprint": false,
-      "is_completed": false,
+      "is_completed": true,
       "predicted_winner": "Red Bull Racing",
       "win_probabilities": [
         {
@@ -162,7 +162,7 @@
       "circuit": "Jeddah Corniche Circuit",
       "date": "2026-04-26",
       "sprint": false,
-      "is_completed": false,
+      "is_completed": true,
       "predicted_winner": "Red Bull Racing",
       "win_probabilities": [
         {
@@ -198,7 +198,7 @@
       "circuit": "Miami International Autodrome",
       "date": "2026-05-03",
       "sprint": true,
-      "is_completed": false,
+      "is_completed": true,
       "predicted_winner": "Red Bull Racing",
       "win_probabilities": [
         {
@@ -234,7 +234,7 @@
       "circuit": "Autodromo Enzo e Dino Ferrari",
       "date": "2026-05-17",
       "sprint": false,
-      "is_completed": false,
+      "is_completed": true,
       "predicted_winner": "Red Bull Racing",
       "win_probabilities": [
         {
@@ -270,7 +270,7 @@
       "circuit": "Circuit de Monaco",
       "date": "2026-05-24",
       "sprint": false,
-      "is_completed": false,
+      "is_completed": true,
       "predicted_winner": "McLaren",
       "win_probabilities": [
         {
@@ -306,7 +306,7 @@
       "circuit": "Barcelona-Catalunya Grand Prix",
       "date": "2026-06-07",
       "sprint": false,
-      "is_completed": false,
+      "is_completed": true,
       "predicted_winner": "McLaren",
       "win_probabilities": [
         {

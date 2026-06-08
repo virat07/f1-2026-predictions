@@ -8,6 +8,6 @@ __pycache__/
 /ml/output/*.json
 *.joblib
 !ml/models/*.joblib
-/ml/processed/
+/ml/processed/fastf1_cache/
 playwright-report/
 test-results/

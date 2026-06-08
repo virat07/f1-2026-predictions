@@ -26,6 +26,7 @@ test('can scroll and update navbar active state', async ({ page }) => {
   await page.goto('/');
   const calendarSection = page.locator('section#calendar');
   await calendarSection.scrollIntoViewIfNeeded();
+  await page.evaluate(() => window.scrollBy(0, 150));
   
   // Wait for intersection observer / debounce
   await page.waitForTimeout(1000);

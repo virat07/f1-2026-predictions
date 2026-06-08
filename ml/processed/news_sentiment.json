@@ -1,0 +1,104 @@
+{
+  "scraped_at": "2026-04-04T07:09:46.805020+00:00",
+  "constructors": {
+    "Red Bull Racing": {
+      "sentiment_score": -1.0,
+      "headline_count": 10,
+      "sample_headlines": [
+        "Google News",
+        "EXPLAINED: What F1 teams and drivers will be doing in April - Formula 1",
+        "Daniel Ricciardo admits harsh truth behind Red Bull exit decision - PlanetF1"
+      ]
+    },
+    "Ferrari": {
+      "sentiment_score": 0.0,
+      "headline_count": 10,
+      "sample_headlines": [
+        "Google News",
+        "The upgrades Ferrari is set to bring after F1's spring break - The Race",
+        "Mercedes saving Antonelli from Ferrari snub was a masterstroke - The Race"
+      ]
+    },
+    "Mercedes": {
+      "sentiment_score": 1.0,
+      "headline_count": 10,
+      "sample_headlines": [
+        "Google News",
+        "Mercedes saving Antonelli from Ferrari snub was a masterstroke - The Race",
+        "George Russell told to 'erode' Kimi Antonelli\u2019s confidence as Mercedes title battle heats up - Motorsport.com"
+      ]
+    },
+    "McLaren": {
+      "sentiment_score": 0.0,
+      "headline_count": 10,
+      "sample_headlines": [
+        "Google News",
+        "The family tree of Formula 1's 11 teams and how they came to be - Formula 1",
+        "HOW WE MAXIMISED OUR POTENTIAL IN JAPAN, AND WHY DOING SO WASN\u2019T STRAIGHTFORWARD \u2013 PRESENTED BY FXPRO - McLaren"
+      ]
+    },
+    "Aston Martin": {
+      "sentiment_score": 0.0,
+      "headline_count": 10,
+      "sample_headlines": [
+        "Google News",
+        "The family tree of Formula 1's 11 teams and how they came to be - Formula 1",
+        "Why Aston Martin removed vibration fix and how it confused Alonso - The Race"
+      ]
+    },
+    "Alpine": {
+      "sentiment_score": 0.0,
+      "headline_count": 10,
+      "sample_headlines": [
+        "Google News",
+        "Formula 1: Alpine writes open letter condemning social media abuse and says accusations of Franco Colapinto 'sabotage' are unfounded - Yahoo Sports",
+        "Alpine addresses Colapinto 'sabotage' claims in stunning open letter - The Race"
+      ]
+    },
+    "Williams": {
+      "sentiment_score": -0.3333,
+      "headline_count": 10,
+      "sample_headlines": [
+        "Google News",
+        "Vowles hopes 'painful' Japanese GP is a 'line in the sand' - Formula 1",
+        "Yet another Williams car problem might be its most troubling - The Race"
+      ]
+    },
+    "Racing Bulls": {
+      "sentiment_score": -1.0,
+      "headline_count": 10,
+      "sample_headlines": [
+        "Google News",
+        "From blockbuster movies to driver tributes \u2013 10 of the most striking one-off liveries in recent F1 history - Formula 1",
+        "Daniel Ricciardo admits harsh truth behind Red Bull exit decision - PlanetF1"
+      ]
+    },
+    "Haas": {
+      "sentiment_score": -1.0,
+      "headline_count": 10,
+      "sample_headlines": [
+        "Google News",
+        "The family tree of Formula 1's 11 teams and how they came to be - Formula 1",
+        "Ayao Komatsu admits he would have \u201claughed\u201d at Haas being P4 after three races - Motorsport.com"
+      ]
+    },
+    "Audi": {
+      "sentiment_score": 0.0,
+      "headline_count": 10,
+      "sample_headlines": [
+        "Google News",
+        "The family tree of Formula 1's 11 teams and how they came to be - Formula 1",
+        "Audi F1 boss may have unwittingly revealed why Jonathan Wheatley quit - Motorsport.com"
+      ]
+    },
+    "Cadillac": {
+      "sentiment_score": 0.0,
+      "headline_count": 10,
+      "sample_headlines": [
+        "Google News",
+        "\u2018A lot of progress in a short space of time\u2019 \u2013 Why Cadillac had their 'strongest race so far' in Japan - Formula 1",
+        "Cadillac beat expectations for its F1 debut, but it knows \u2018the honeymoon\u2019s over\u2019 - The New York Times"
+      ]
+    }
+  }
+}
