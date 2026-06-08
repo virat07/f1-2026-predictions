@@ -129,7 +129,7 @@ function RaceCalendar({ notify }) {
         <div className="calendar-grid">
           {races.map((race, i) => {
             const isNext = i === nextRaceIndex
-            const isCompleted = !!actualResults[race.round]
+            const isCompleted = !!actualResults[race.round] && !!actualResults[race.round].race_winner
             return (
               <div
                 key={race.round}
@@ -209,7 +209,7 @@ function RaceCalendar({ notify }) {
                 )}
 
                 {/* Actual result */}
-                {actualResults[race.round] && (
+                {actualResults[race.round] && actualResults[race.round].race_winner && (
                   <div className="rc-result">
                     <span className="result-label">🏁 FINAL RESULT</span>
                     <div className="rc-result-grid">
