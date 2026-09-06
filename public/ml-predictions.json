@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05T20:10:29.946871+00:00",
+  "generated_at": "2026-09-06T20:15:03.419739+00:00",
   "season": 2026,
   "source": "ml_models_fastf1",
   "total_rounds": 24,
@@ -23,28 +23,28 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1041
+          "win_probability": 0.1042
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1034
+          "win_probability": 0.1035
         },
         {
           "constructor": "Cadillac",
-          "win_probability": 0.1032
+          "win_probability": 0.1033
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.103
+          "win_probability": 0.1032
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1017
+          "win_probability": 0.1018
         }
       ],
       "predicted_podium": {
-        "P1": "Alpine",
-        "P2": "Ferrari",
+        "P1": "Ferrari",
+        "P2": "Williams",
         "P3": "Red Bull Racing"
       }
     },
@@ -59,15 +59,15 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1846
+          "win_probability": 0.1847
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1752
+          "win_probability": 0.1751
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.173
+          "win_probability": 0.1729
         },
         {
           "constructor": "Cadillac",
@@ -80,7 +80,7 @@
       ],
       "predicted_podium": {
         "P1": "Red Bull Racing",
-        "P2": "Ferrari",
+        "P2": "Williams",
         "P3": "Aston Martin"
       }
     },
@@ -95,7 +95,7 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1586
+          "win_probability": 0.1587
         },
         {
           "constructor": "McLaren",
@@ -107,7 +107,7 @@
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1415
+          "win_probability": 0.1414
         },
         {
           "constructor": "Cadillac",
@@ -116,7 +116,7 @@
       ],
       "predicted_podium": {
         "P1": "Red Bull Racing",
-        "P2": "Ferrari",
+        "P2": "Williams",
         "P3": "Aston Martin"
       }
     },
@@ -147,12 +147,12 @@
         },
         {
           "constructor": "Cadillac",
-          "win_probability": 0.1319
+          "win_probability": 0.1318
         }
       ],
       "predicted_podium": {
         "P1": "Red Bull Racing",
-        "P2": "Ferrari",
+        "P2": "Williams",
         "P3": "Aston Martin"
       }
     },
@@ -183,7 +183,7 @@
         },
         {
           "constructor": "Cadillac",
-          "win_probability": 0.1036
+          "win_probability": 0.1035
         }
       ],
       "predicted_podium": {
@@ -203,7 +203,7 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1933
+          "win_probability": 0.1935
         },
         {
           "constructor": "McLaren",
@@ -211,7 +211,7 @@
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.173
+          "win_probability": 0.1729
         },
         {
           "constructor": "Mercedes",
@@ -224,7 +224,7 @@
       ],
       "predicted_podium": {
         "P1": "Red Bull Racing",
-        "P2": "Ferrari",
+        "P2": "Williams",
         "P3": "Aston Martin"
       }
     },
@@ -247,7 +247,7 @@
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1536
+          "win_probability": 0.1535
         },
         {
           "constructor": "Mercedes",
@@ -255,12 +255,12 @@
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1103
+          "win_probability": 0.1102
         }
       ],
       "predicted_podium": {
         "P1": "Red Bull Racing",
-        "P2": "Ferrari",
+        "P2": "Williams",
         "P3": "Aston Martin"
       }
     },
@@ -275,11 +275,11 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.178
+          "win_probability": 0.1781
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.169
+          "win_probability": 0.1689
         },
         {
           "constructor": "Williams",
@@ -287,7 +287,7 @@
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1255
+          "win_probability": 0.1254
         },
         {
           "constructor": "Audi",
@@ -296,7 +296,7 @@
       ],
       "predicted_podium": {
         "P1": "Red Bull Racing",
-        "P2": "Ferrari",
+        "P2": "Williams",
         "P3": "Aston Martin"
       }
     },
@@ -311,7 +311,7 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1461
+          "win_probability": 0.1462
         },
         {
           "constructor": "McLaren",
@@ -323,7 +323,7 @@
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.118
+          "win_probability": 0.1179
         },
         {
           "constructor": "Cadillac",
@@ -347,28 +347,28 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1332
+          "win_probability": 0.1344
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1274
+          "win_probability": 0.1285
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1255
+          "win_probability": 0.1266
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1133
+          "win_probability": 0.1143
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1109
+          "win_probability": 0.1119
         }
       ],
       "predicted_podium": {
         "P1": "Red Bull Racing",
-        "P2": "Ferrari",
+        "P2": "Williams",
         "P3": "Aston Martin"
       }
     },
@@ -383,28 +383,28 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.218
+          "win_probability": 0.2237
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1661
+          "win_probability": 0.168
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1581
+          "win_probability": 0.1598
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1308
+          "win_probability": 0.1322
         },
         {
           "constructor": "Cadillac",
-          "win_probability": 0.0834
+          "win_probability": 0.0844
         }
       ],
       "predicted_podium": {
         "P1": "Red Bull Racing",
-        "P2": "Ferrari",
+        "P2": "Mercedes",
         "P3": "Cadillac"
       }
     },
@@ -419,28 +419,28 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.166
+          "win_probability": 0.1689
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.161
+          "win_probability": 0.1633
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1555
+          "win_probability": 0.1577
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1231
+          "win_probability": 0.1249
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1114
+          "win_probability": 0.113
         }
       ],
       "predicted_podium": {
-        "P1": "Red Bull Racing",
-        "P2": "Ferrari",
+        "P1": "Mercedes",
+        "P2": "Red Bull Racing",
         "P3": "Aston Martin"
       }
     },
@@ -455,28 +455,28 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1475
+          "win_probability": 0.1489
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1396
+          "win_probability": 0.1409
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1313
+          "win_probability": 0.1324
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1247
+          "win_probability": 0.1259
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1134
+          "win_probability": 0.1144
         }
       ],
       "predicted_podium": {
         "P1": "Red Bull Racing",
-        "P2": "Ferrari",
+        "P2": "Williams",
         "P3": "Aston Martin"
       }
     },
@@ -491,7 +491,7 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.177
+          "win_probability": 0.1772
         },
         {
           "constructor": "McLaren",
@@ -512,7 +512,7 @@
       ],
       "predicted_podium": {
         "P1": "Red Bull Racing",
-        "P2": "Ferrari",
+        "P2": "Williams",
         "P3": "Aston Martin"
       }
     },
@@ -527,23 +527,23 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1631
+          "win_probability": 0.1642
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.158
+          "win_probability": 0.1586
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1518
+          "win_probability": 0.1524
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1494
+          "win_probability": 0.1499
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1029
+          "win_probability": 0.1032
         }
       ],
       "predicted_podium": {
@@ -563,23 +563,23 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.153
+          "win_probability": 0.1538
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1485
+          "win_probability": 0.1492
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1447
+          "win_probability": 0.1453
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1397
+          "win_probability": 0.1402
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1069
+          "win_probability": 0.1073
         }
       ],
       "predicted_podium": {
@@ -599,23 +599,23 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1628
+          "win_probability": 0.1647
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1574
+          "win_probability": 0.1582
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.152
+          "win_probability": 0.1528
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1496
+          "win_probability": 0.1504
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.103
+          "win_probability": 0.1036
         }
       ],
       "predicted_podium": {
@@ -635,28 +635,28 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.151
+          "win_probability": 0.154
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1497
+          "win_probability": 0.1515
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1487
+          "win_probability": 0.1505
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1391
+          "win_probability": 0.1408
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1078
+          "win_probability": 0.1091
         }
       ],
       "predicted_podium": {
-        "P1": "Red Bull Racing",
-        "P2": "Williams",
+        "P1": "Mercedes",
+        "P2": "Red Bull Racing",
         "P3": "Aston Martin"
       }
     },
@@ -671,23 +671,23 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1304
+          "win_probability": 0.1319
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.129
+          "win_probability": 0.1303
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1276
+          "win_probability": 0.1288
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1105
+          "win_probability": 0.1115
         },
         {
           "constructor": "Cadillac",
-          "win_probability": 0.1029
+          "win_probability": 0.1038
         }
       ],
       "predicted_podium": {
@@ -707,23 +707,23 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1223
+          "win_probability": 0.1218
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1215
+          "win_probability": 0.1208
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1203
+          "win_probability": 0.1197
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1101
+          "win_probability": 0.1094
         },
         {
           "constructor": "Cadillac",
-          "win_probability": 0.1049
+          "win_probability": 0.1043
         }
       ],
       "predicted_podium": {
@@ -743,23 +743,23 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1583
+          "win_probability": 0.1605
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1534
+          "win_probability": 0.1547
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1506
+          "win_probability": 0.1519
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1486
+          "win_probability": 0.1499
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1034
+          "win_probability": 0.1043
         }
       ],
       "predicted_podium": {
@@ -779,23 +779,23 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1347
+          "win_probability": 0.1364
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1311
+          "win_probability": 0.1324
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1295
+          "win_probability": 0.1308
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.128
+          "win_probability": 0.1293
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1104
+          "win_probability": 0.1115
         }
       ],
       "predicted_podium": {
@@ -815,23 +815,23 @@
       "win_probabilities": [
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1583
+          "win_probability": 0.1605
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1534
+          "win_probability": 0.1547
         },
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1506
+          "win_probability": 0.1519
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1486
+          "win_probability": 0.1499
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1034
+          "win_probability": 0.1043
         }
       ],
       "predicted_podium": {
@@ -851,28 +851,28 @@
       "win_probabilities": [
         {
           "constructor": "Mercedes",
-          "win_probability": 0.1506
+          "win_probability": 0.153
         },
         {
           "constructor": "Red Bull Racing",
-          "win_probability": 0.1461
+          "win_probability": 0.1499
         },
         {
           "constructor": "McLaren",
-          "win_probability": 0.1428
+          "win_probability": 0.145
         },
         {
           "constructor": "Williams",
-          "win_probability": 0.1297
+          "win_probability": 0.1318
         },
         {
           "constructor": "Audi",
-          "win_probability": 0.1098
+          "win_probability": 0.1115
         }
       ],
       "predicted_podium": {
-        "P1": "Red Bull Racing",
-        "P2": "Williams",
+        "P1": "Mercedes",
+        "P2": "Red Bull Racing",
         "P3": "Aston Martin"
       }
     }
@@ -885,13 +885,13 @@
         "rank": 1
       },
       {
-        "constructor": "Ferrari",
-        "predicted_points": 575.4,
+        "constructor": "Red Bull Racing",
+        "predicted_points": 313.0,
         "rank": 2
       },
       {
-        "constructor": "Red Bull Racing",
-        "predicted_points": 315.1,
+        "constructor": "Ferrari",
+        "predicted_points": 303.4,
         "rank": 3
       },
       {
@@ -943,7 +943,7 @@
         "constructor": "Mercedes",
         "predicted_points": 428.6,
         "position": 1,
-        "championship_pct": 31.8
+        "championship_pct": 40.1
       },
       {
         "driver": "ANT",
@@ -952,34 +952,16 @@
         "constructor": "Mercedes",
         "predicted_points": 310.4,
         "position": 2,
-        "championship_pct": 16.7
-      },
-      {
-        "driver": "HAM",
-        "name": "Lewis Hamilton",
-        "number": 44,
-        "constructor": "Ferrari",
-        "predicted_points": 299.2,
-        "position": 3,
-        "championship_pct": 15.5
-      },
-      {
-        "driver": "LEC",
-        "name": "Charles Leclerc",
-        "number": 16,
-        "constructor": "Ferrari",
-        "predicted_points": 276.2,
-        "position": 4,
-        "championship_pct": 13.2
+        "championship_pct": 21.0
       },
       {
         "driver": "VER",
         "name": "Max Verstappen",
         "number": 3,
         "constructor": "Red Bull Racing",
-        "predicted_points": 195.4,
-        "position": 5,
-        "championship_pct": 6.6
+        "predicted_points": 194.1,
+        "position": 3,
+        "championship_pct": 8.2
       },
       {
         "driver": "NOR",
@@ -987,6 +969,24 @@
         "number": 1,
         "constructor": "McLaren",
         "predicted_points": 162.9,
+        "position": 4,
+        "championship_pct": 5.8
+      },
+      {
+        "driver": "HAM",
+        "name": "Lewis Hamilton",
+        "number": 44,
+        "constructor": "Ferrari",
+        "predicted_points": 157.8,
+        "position": 5,
+        "championship_pct": 5.4
+      },
+      {
+        "driver": "LEC",
+        "name": "Charles Leclerc",
+        "number": 16,
+        "constructor": "Ferrari",
+        "predicted_points": 145.6,
         "position": 6,
         "championship_pct": 4.6
       },
@@ -997,16 +997,16 @@
         "constructor": "McLaren",
         "predicted_points": 138.8,
         "position": 7,
-        "championship_pct": 3.3
+        "championship_pct": 4.2
       },
       {
         "driver": "HAD",
         "name": "Isack Hadjar",
         "number": 6,
         "constructor": "Red Bull Racing",
-        "predicted_points": 119.7,
+        "predicted_points": 118.9,
         "position": 8,
-        "championship_pct": 2.5
+        "championship_pct": 3.1
       },
       {
         "driver": "GAS",
@@ -1015,7 +1015,7 @@
         "constructor": "Alpine",
         "predicted_points": 74.6,
         "position": 9,
-        "championship_pct": 1.0
+        "championship_pct": 1.2
       },
       {
         "driver": "COL",
@@ -1024,7 +1024,7 @@
         "constructor": "Alpine",
         "predicted_points": 68.8,
         "position": 10,
-        "championship_pct": 0.8
+        "championship_pct": 1.0
       },
       {
         "driver": "LAW",
@@ -1033,7 +1033,7 @@
         "constructor": "Racing Bulls",
         "predicted_points": 60.3,
         "position": 11,
-        "championship_pct": 0.6
+        "championship_pct": 0.8
       },
       {
         "driver": "OCO",
@@ -1042,7 +1042,7 @@
         "constructor": "Haas",
         "predicted_points": 57.8,
         "position": 12,
-        "championship_pct": 0.6
+        "championship_pct": 0.7
       },
       {
         "driver": "BEA",
@@ -1051,7 +1051,7 @@
         "constructor": "Haas",
         "predicted_points": 57.8,
         "position": 13,
-        "championship_pct": 0.6
+        "championship_pct": 0.7
       },
       {
         "driver": "HUL",
@@ -1060,7 +1060,7 @@
         "constructor": "Audi",
         "predicted_points": 57.7,
         "position": 14,
-        "championship_pct": 0.6
+        "championship_pct": 0.7
       },
       {
         "driver": "BOR",
@@ -1069,7 +1069,7 @@
         "constructor": "Audi",
         "predicted_points": 51.1,
         "position": 15,
-        "championship_pct": 0.5
+        "championship_pct": 0.6
       },
       {
         "driver": "STR",
@@ -1078,7 +1078,7 @@
         "constructor": "Aston Martin",
         "predicted_points": 50.4,
         "position": 16,
-        "championship_pct": 0.4
+        "championship_pct": 0.6
       },
       {
         "driver": "ALO",
@@ -1087,7 +1087,7 @@
         "constructor": "Aston Martin",
         "predicted_points": 50.4,
         "position": 17,
-        "championship_pct": 0.4
+        "championship_pct": 0.6
       },
       {
         "driver": "LIN",
@@ -1096,7 +1096,7 @@
         "constructor": "Racing Bulls",
         "predicted_points": 49.4,
         "position": 18,
-        "championship_pct": 0.4
+        "championship_pct": 0.5
       },
       {
         "driver": "PER",
